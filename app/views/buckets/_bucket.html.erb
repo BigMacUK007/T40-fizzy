@@ -14,5 +14,10 @@
 
   <div class="flex align-center justify-center flex-column gap-half center">
     <strong><%= link_to bucket.name, bucket_bubbles_path(bucket), class: "txt-x-large txt-ink" %></strong>
+
+    <%= link_to edit_bucket_url(bucket), class: "btn" do %>
+      <%= image_tag "settings.svg", aria: { hidden: true }, size: 24 %>
+      <span class="for-screen-reader">Bucket settings</span>
+    <% end %>
   </div>
 </li>

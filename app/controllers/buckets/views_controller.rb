@@ -15,7 +15,7 @@ class Buckets::ViewsController < ApplicationController
 
   def destroy
     @view.destroy
-    redirect_to bucket_bubbles_path(@bucket, **filter_params), notice: "✓"
+    redirect_to buckets_path
   end
 
   private
