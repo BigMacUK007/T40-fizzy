@@ -1,4 +1,4 @@
-<span class="bubble__bubble bubble__meta bubble__assignee <%= "bubble__assignee--new" if bubble.assignees.none? %>">
+<span <%= "hidden" unless bubble.assignees.any? %> id="new-assignee" class="bubble__bubble bubble__meta bubble__assignee <%= "bubble__assignee--new" if bubble.assignees.none? %>">
   <%= form_with url: bucket_bubble_assignments_path(bubble.bucket, bubble), data: { controller: "form" } do |form| %>
     <label class="btn btn--plain position-relative fill-transparent" style="<%= "--btn-icon-size: 2em;" unless bubble.assignees.any? %>">
       <% if bubble.assignees.any? %>

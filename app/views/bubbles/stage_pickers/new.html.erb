@@ -1,6 +1,6 @@
 <%= turbo_frame_tag dom_id(@bubble, :stage_picker) do %>
   <% if @selected_workflow %>
-    <aside style="position: absolute; top: 10rem; right: 3rem; --bubble-color: <%= @bubble.color %>"
+    <aside class="position-relative" style="--bubble-color: <%= @bubble.color %>"
         data-controller="dialog" data-action="keydown.esc->dialog#close click@document->dialog#closeOnClickOutside">
       <div class="flex flex-column">
         <button class="btn center" data-action="click->dialog#toggle" data-dialog-modal-value="true">

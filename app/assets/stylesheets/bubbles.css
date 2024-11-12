@@ -136,7 +136,7 @@
 
   &.bubble__assignee {
     aspect-ratio: 1;
-    font-size: 4.5  cqi;
+    font-size: 4.5cqi;
     inset: -2cqi auto auto 26cqi;
     padding: 0.4em;
 
@@ -307,6 +307,15 @@
   }
 }
 
+.bubble__container {
+  inline-size: min(67ch, 75vw);
+  max-inline-size: 100vw;
+
+  @media (max-width: 70ch) {
+    inline-size: min(67ch, 100vw);
+  }
+}
+
 .bubble__image {
   border: none;
   border-radius: var(--bubble-shape);
@@ -347,7 +356,8 @@
 }
 
 .bubble__perma {
-  block-size: 65cqb;
+  block-size: 100%;
+  max-block-size: 65dvh;
   max-inline-size: 100%;
 }
 

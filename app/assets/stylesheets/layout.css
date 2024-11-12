@@ -23,6 +23,12 @@ body {
     text-justify: distribute;
     widows: 2;
   }
+
+  &:has(.bubble__perma) {
+    display: grid;
+    grid-template-columns: 1fr minmax(min-content, auto) 1fr;
+    gap: var(--inline-space);
+  }
 }
 
 :where(#footer) {

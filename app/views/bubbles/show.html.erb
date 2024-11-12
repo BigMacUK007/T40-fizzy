@@ -6,16 +6,43 @@
       <%= image_tag "arrow-left.svg", aria: { hidden: true }, size: 24 %>
       <span class="for-screen-reader">Back</span>
     <% end %>
-
-    <section class="flex flex-column align-end gap">
-      <%= render "bubbles/pop_toggle", bubble: @bubble %>
-      <%= turbo_frame_tag dom_id(@bubble, :stage_picker), src: new_bucket_bubble_stage_picker_path(@bubble.bucket, @bubble) %>
-    </section>
   </nav>
 <% end %>
 
-<div class="bubble__perma flex justify-center center margin-block-end-double">
-  <%= render "bubbles/bubble", bubble: @bubble %>
+<div class="flex align-start justify-end">
+  <%= turbo_frame_tag dom_id(@bubble, :stage_picker), src: new_bucket_bubble_stage_picker_path(@bubble.bucket, @bubble) %>
 </div>
 
-<%= render "bubbles/messages", bubble: @bubble %>
+<div class="bubble__container">
+  <div class="bubble__perma flex justify-center center margin-block-end-double">
+    <%= render "bubbles/bubble", bubble: @bubble %>
+  </div>
+
+  <%= render "bubbles/messages", bubble: @bubble %>
+</div>
+
+<aside class="flex align-start justify-start" style="--bubble-color: <%= @bubble.color %>">
+  <div class="flex flex-column gap-half">
+    <button class="btn full-width justify-start borderless" onclick="document.getElementById('new-color').removeAttribute('hidden')">
+      <%= image_tag "art.svg", aria: { hidden: true }, size: 24 %>
+      <span>Color it</span>
+    </button>
+    <button class="btn full-width justify-start borderless" onclick="document.getElementById('new-date').removeAttribute('hidden')">
+      <%= image_tag "calendar-add.svg", aria: { hidden: true }, size: 24 %>
+      <span>Add a due date</span>
+    </button>
+    <button class="btn full-width justify-start borderless" onclick="document.getElementById('new-tag').removeAttribute('hidden')">
+      <%= image_tag "tag.svg", aria: { hidden: true }, size: 24 %>
+      <span>Tag this</span>
+    </button>
+    <button class="btn full-width justify-start borderless" onclick="document.getElementById('new-assignee').removeAttribute('hidden')">
+      <%= image_tag "person.svg", aria: { hidden: true }, size: 24 %>
+      <span>Assign to…</span>
+    </button>
+    <button class="btn full-width justify-start borderless" onclick="document.getElementById('new-attachment').removeAttribute('hidden')">
+      <%= image_tag "picture-add.svg", aria: { hidden: true }, size: 24 %>
+      <span>Attach a file</span>
+    </button>
+    <%= render "bubbles/pop_toggle", bubble: @bubble %>
+  </div>
+</aside>

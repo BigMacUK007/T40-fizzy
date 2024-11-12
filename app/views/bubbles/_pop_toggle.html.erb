@@ -1,11 +1,11 @@
 <% if bubble.popped? %>
-  <%= button_to bucket_bubble_pop_path(bubble.bucket, bubble), method: :delete, class: "btn" do %>
+  <%= button_to bucket_bubble_pop_path(bubble.bucket, bubble), method: :delete, class: "btn full-width justify-start borderless" do %>
     <%= image_tag "pop.svg", aria: { hidden: true }, size: 24 %>
-    <span>Un-pop</span>
+    <span>Restore it</span>
   <% end %>
 <% else %>
-  <%= button_to bucket_bubble_pop_path(bubble.bucket, bubble), class: "btn" do %>
+  <%= button_to bucket_bubble_pop_path(bubble.bucket, bubble), class: "btn full-width justify-start borderless" do %>
     <%= image_tag "pop.svg", aria: { hidden: true }, size: 24 %>
-    <span>Pop</span>
+    <span>Pop it</span>
   <% end %>
 <% end %>

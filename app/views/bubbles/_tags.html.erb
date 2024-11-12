@@ -3,7 +3,7 @@
 <% end %>
 
 <% if bubble.tags.size < 3 %>
-  <span class="bubble__bubble bubble__meta bubble__tag">
+  <span class="bubble__bubble bubble__meta bubble__tag" id="new-tag" hidden>
     <%= turbo_frame_tag :new_tag do %>
       <%= link_to "#", new_bucket_bubble_tag_path(bubble.bucket, bubble), class: "bubble__tag--new" %>
     <% end %>
