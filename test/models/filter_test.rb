@@ -89,6 +89,11 @@ class FilterTest < ActiveSupport::TestCase
     assert_includes filter.as_params[:bucket_ids], buckets(:writebook).id
     assert_includes filter.buckets, buckets(:writebook)
 
+    users(:david).filters.create! tag_ids: [ tags(:mobile).id, tags(:web).id ], bucket_ids: [ buckets(:writebook).id ]
+    assert_difference "Filter.count", -1 do
+      tags(:web).destroy!
+    end
+
     assert_changes "filter.reload.updated_at" do
       tags(:mobile).destroy!
     end

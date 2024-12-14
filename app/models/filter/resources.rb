@@ -12,6 +12,8 @@ module Filter::Resources
     kind = resource.class.model_name.plural
     send "#{kind}=", send(kind).without(resource)
     empty? ? destroy! : save!
+  rescue ActiveRecord::RecordNotUnique
+    destroy!
   end
 
   def buckets
