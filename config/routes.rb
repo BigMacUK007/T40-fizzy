@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   resources :notifications, only: :index
   namespace :notifications do
     resource :tray, only: :show
+    resource :mark_all_read, only: :create
   end
 
   resources :buckets do

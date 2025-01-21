@@ -4,9 +4,9 @@
       data: { controller: "dialog", turbo_permanent: true, dialog_modal_value: false, dialog_target: "dialog", action: "keydown.esc->dialog#close:stop click@document->dialog#closeOnClickOutside" } do %>
   <%= turbo_frame_tag("notifications", src: notifications_tray_path) -%>
   <div class="notification-tray__actions flex align-center gap-half">
-    <button class="notification-tray__read_action btn flex-item-justify-start">
+    <%= button_to notifications_mark_all_read_path, class: "notification-tray__read_action btn flex-item-justify-start", data: { turbo_frame: "notifications" } do %>
       Mark all as read
-    </button>
+    <% end %>
 
     <%= link_to notifications_path, class: "notification-tray__all_action btn flex-item-justify-end" do %>
       <%= image_tag "bell.svg", aria: { hidden: true }, size: 24 %>
