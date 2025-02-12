@@ -9,7 +9,7 @@
 }
 
 .windshield {
-  --column-gap: 1cqi;
+  --column-gap: 2cqi;
   --row-gap: 1cqi;
 
   margin-block: clamp(var(--block-space), 3%, calc(var(--block-space) * 2));
@@ -351,14 +351,14 @@
 }
 
 .bubble__title {
-  -webkit-line-clamp: var(--lines, 5);
+  -webkit-line-clamp: var(--lines, 4);
   -webkit-box-orient: vertical;
   display: -webkit-box;
   font-size: 9cqi;
   line-height: 1.2;
   margin: auto;
-  max-block-size: 75cqi;
-  max-inline-size: 75cqi;
+  max-block-size: 60cqi;
+  max-inline-size: 60cqi;
   overflow: hidden;
   text-overflow: clip;
   white-space: normal;
@@ -541,6 +541,27 @@
   .bubble--wobble:nth-child(even) & {
     animation-name: wobble-alt;
     animation-duration: 900ms;
+  }
+}
+
+.bubble__burst {
+  --bubble-border-width: 0.6rem;
+
+  block-size: 55cqi;
+  inline-size: 55cqi;
+  position: absolute;
+  inset: auto -2cqi -6cqi auto;
+  transition: transform 200ms ease-out;
+  z-index: 0;
+
+  .bubble__perma & {
+    --bubble-border-width: 0.3rem;
+  }
+
+  @media (hover: hover) {
+    .windshield .bubble:hover & {
+      transform: translate(-1rem, 1rem) rotate(20deg);
+    }
   }
 }
 
