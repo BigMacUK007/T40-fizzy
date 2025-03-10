@@ -3,9 +3,9 @@ require "test_helper"
 class EventsControllerTest < ActionDispatch::IntegrationTest
   setup do
     sign_in_as :kevin
+    travel_to Time.utc(2025, 1, 22, 17, 30, 0)
 
     events(:layout_assignment_jz).update!(created_at: Time.current.beginning_of_day + 8.hours)
-    travel_to Time.current.beginning_of_day + 15.hours
   end
 
   test "index" do
