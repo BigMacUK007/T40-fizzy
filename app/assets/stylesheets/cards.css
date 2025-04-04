@@ -72,7 +72,9 @@
 }
 
 .card {
+  --border-color: transparent;
   --border-radius: 0.2em;
+  --border-size: 0;
 
   aspect-ratio: 2/0.95;
   background-color: color-mix(in srgb, var(--bubble-color) 4%, var(--color-bg));
@@ -82,6 +84,11 @@
 
   .card__container & {
     inline-size: calc(100dvw - var(--actions-inline-inset) * 2 - var(--btn-size) * 2);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    --border-color: var(--color-subtle-dark);
+    --border-size: 1px;
   }
 }
 
