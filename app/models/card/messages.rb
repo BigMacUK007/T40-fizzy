@@ -3,7 +3,13 @@ module Card::Messages
 
   included do
     has_many :messages, -> { chronologically }, dependent: :destroy
+    has_many :comments, through: :messages, source: :messageable
     after_save :capture_draft_comment
+  end
+
+  def comments
+    # FIXME: I could have sworn there was a way to declare this as a association?
+    Comment.joins(:message).where(messages: { card_id: id })
   end
 
   def capture(messageable)

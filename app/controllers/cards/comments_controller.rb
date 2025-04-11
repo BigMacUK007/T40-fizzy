@@ -1,10 +1,11 @@
 class Cards::CommentsController < ApplicationController
   include CardScoped
-  before_action :set_comment, only: [ :show, :edit, :update, :destroy ]
-  before_action :require_own_comment, only: [ :edit, :update, :destroy ]
+
+  before_action :set_comment, only: %i[ show edit update destroy ]
+  before_action :ensure_authorship, only: %i[ edit update destroy ]
 
   def create
-    @card.capture new_comment
+    @card.capture Comment.new(comment_params)
   end
 
   def show
@@ -23,21 +24,15 @@ class Cards::CommentsController < ApplicationController
   end
 
   private
+    def set_comment
+      @comment = @card.comments.find(params[:id])
+    end
+
+    def ensure_authorship
+      head :forbidden if Current.user != @comment.creator
+    end
+
     def comment_params
       params.require(:comment).permit(:body)
-    end
-
-    def new_comment
-      Comment.new(comment_params)
-    end
-
-    def set_comment
-      @comment = Comment.joins(:message)
-                        .where(messages: { card_id: @card.id })
-                        .find(params[:id])
-    end
-
-    def require_own_comment
-      head :forbidden unless Current.user == @comment.creator
     end
 end
