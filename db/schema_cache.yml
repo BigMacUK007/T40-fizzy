@@ -1059,23 +1059,7 @@ indexes:
     nulls_not_distinct:
     comment:
     valid: true
-  accounts:
-  - !ruby/object:ActiveRecord::ConnectionAdapters::IndexDefinition
-    table: accounts
-    name: index_accounts_on_join_code
-    unique: true
-    columns:
-    - join_code
-    lengths: {}
-    orders: {}
-    opclasses: {}
-    where:
-    type:
-    using:
-    include:
-    nulls_not_distinct:
-    comment:
-    valid: true
+  accounts: []
   action_text_markdowns:
   - !ruby/object:ActiveRecord::ConnectionAdapters::IndexDefinition
     table: action_text_markdowns
@@ -2008,4 +1992,4 @@ indexes:
     comment:
     valid: true
   workflows: []
-version: 20250415131630
+version: 20250415131804
