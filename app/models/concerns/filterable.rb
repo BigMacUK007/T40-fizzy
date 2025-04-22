@@ -5,7 +5,7 @@ module Filterable
     has_and_belongs_to_many :filters
 
     after_update { filters.touch_all }
-    before_destroy :remove_from_filters
+    before_destroy_commit :remove_from_filters
   end
 
   private
