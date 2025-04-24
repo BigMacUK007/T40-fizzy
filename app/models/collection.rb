@@ -5,6 +5,7 @@ class Collection < ApplicationRecord
 
   has_many :cards, dependent: :destroy
   has_many :tags, -> { distinct }, through: :cards
+  has_many :events
 
   scope :alphabetically, -> { order("lower(name)") }
 end
