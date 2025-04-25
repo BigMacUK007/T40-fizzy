@@ -3,6 +3,15 @@
     Considering
   </h2>
 
+  <% if collection = filter.single_collection %>
+    <%= button_to collection_cards_path(collection), method: :post, class: "card card--new-card-button btn", form_class: "full-width" do %>
+      <div class="card__body flex align-center gap-half txt-xx-large margin-block-half">
+        <%= icon_tag "add" %>
+        <span>Add a new card</span>
+      </div>
+    <% end %>
+  <% end %>
+
   <% if page.used? %>
     <%= render partial: "cards/display/preview", collection: page.records, as: :card, cached: true %>
 

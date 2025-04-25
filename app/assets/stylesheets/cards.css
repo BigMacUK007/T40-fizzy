@@ -158,6 +158,19 @@
     padding-block: var(--block-space-half);
   }
 
+  .card--new-card-button:is(.btn) {
+    --btn-padding: var(--block-space) var(--inline-space-double);
+    --btn-border-size: 0;
+    --btn-color: var(--color-link);
+    --btn-icon-size: 1em;
+    --card-padding-block: calc(var(--block-space) * 1.25);
+
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-link) 20%, var(--color-bg));
+    color: var(--btn-color);
+    font-weight: 700;
+    
+  }
+
   .card__move-button {
     --btn-background: color-mix(in srgb, inherit 40%, var(--color-ink));
 

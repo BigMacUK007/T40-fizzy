@@ -1,7 +1,6 @@
 <nav class="align-start">
   <%= link_to_home %>
 
-  <div class="btn btn--placeholder"></div>
   <div class="btn btn--placeholder flex-item-justify-start"></div>
 
   <header class="flex flex-inline flex-column center flex-shrink">
@@ -53,11 +52,6 @@
     <%= link_to edit_collection_path(collection), class: "btn" do %>
       <%= icon_tag "settings" %>
       <span class="for-screen-reader">Settings for <%= collection.name %></span>
-    <% end %>
-
-    <%= button_to collection_cards_path(collection), method: :post, class: "btn" do %>
-      <%= icon_tag "add" %>
-      <span class="for-screen-reader">Create a new card</span>
     <% end %>
   <% else %>
     <div class="btn btn--placeholder flex-item-justify-end"></div>
