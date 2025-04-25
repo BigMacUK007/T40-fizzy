@@ -10,9 +10,8 @@ class Cards::EngagementsControllerTest < ActionDispatch::IntegrationTest
 
     assert_changes -> { card.reload.doing? }, from: false, to: true do
       post card_engagement_path(card)
+      assert_card_container_rerendered(card)
     end
-
-    assert_redirected_to collection_card_path(card.collection, card)
   end
 
   test "destroy" do
@@ -20,8 +19,12 @@ class Cards::EngagementsControllerTest < ActionDispatch::IntegrationTest
 
     assert_changes -> { card.reload.doing? }, from: true, to: false do
       delete card_engagement_path(card)
+      assert_card_container_rerendered(card)
     end
-
-    assert_redirected_to collection_card_path(card.collection, card)
   end
+
+  private
+    def assert_card_container_rerendered(card)
+      assert_turbo_stream action: :replace, target: dom_id(card, :card_container)
+    end
 end

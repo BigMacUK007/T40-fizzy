@@ -1,25 +1,20 @@
 <div class="events--day" data-controller="related-element"
-     data-related-element-highlight-class="event--related">
-  <% if events.any? %>
+  data-related-element-highlight-class="event--related">
+  <% if day_timeline.has_activity? %>
     <h2 class="txt-medium events__day-header center">
-      <span class="events__day-header-content"><%= event_day_title(activity_day) %><span>
+      <span class="events__day-header-content">
+        <%= local_datetime_tag day_timeline.day, style: :agoorweekday, class: "txt-ink" %>
+      </span>
     </h2>
 
     <div class="center events">
-      <%= render_column_headers(activity_day) %>
-      <%= render_event_grid_cells(activity_day) %>
-
-      <% events.each do | hour_column, cluster| %>
-        <%= event_cluster_tag(*hour_column) do %>
-          <%= render partial: "events/event", collection: cluster.sort_by(&:created_at).reverse %>
-
-          <%= local_datetime_tag cluster.first.created_at, class: "event__timestamp txt-small translucent" %>
-        <% end %>
-      <% end %>
+      <%= render_column_headers(day_timeline) %>
+      <%= render_event_grid_cells %>
+      <%= render "events/day_timeline", day_timeline: day_timeline  %>
     </div>
 
-    <%= render "events/empty_days", earliest: next_day&.tomorrow&.beginning_of_day, latest: activity_day.yesterday.beginning_of_day %>
+    <%= render "events/empty_days", day_timeline: day_timeline %>
   <% else %>
-    <%= render "events/empty_days", earliest: next_day&.tomorrow&.beginning_of_day, latest: activity_day.beginning_of_day %>
+    <%= render "events/empty_days", day_timeline: day_timeline %>
   <% end %>
 </div>

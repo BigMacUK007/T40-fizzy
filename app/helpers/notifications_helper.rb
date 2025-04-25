@@ -1,20 +1,19 @@
 module NotificationsHelper
-  def notification_title(notification)
-    if notification.resource.is_a? Comment
-      "RE: " + notification.card.title
-    elsif notification_event_action(notification) == "assigned"
-      "Assigned to you: " + notification.card.title
-    else
-      notification.card.title
+  def event_notification_title(event)
+    case event_notification_action(event)
+    when "comment_created" then "RE: " + event.eventable.card.title
+    when "card_assigned" then "Assigned to you: " + event.eventable.title
+    else event.eventable.title
     end
   end
 
-  def notification_body(notification)
-    name = notification.creator.name
+  def event_notification_body(event)
+    name = event.creator.name
 
-    case notification_event_action(notification)
-    when "closed" then "Closed by #{name}"
-    when "published" then "Added by #{name}"
+    case event_notification_action(event)
+    when "card_closed" then "Closed by #{name}"
+    when "card_published" then "Added by #{name}"
+    when "comment_created" then comment_notification_body(event)
     else name
     end
   end
@@ -22,7 +21,7 @@ module NotificationsHelper
   def notification_tag(notification, &)
     tag.div id: dom_id(notification), class: "notification tray__item border-radius txt-normal" do
       concat(
-        link_to(notification.resource,
+        link_to(notification,
           class: "notification__content border-radius shadow fill-white flex align-start txt-align-start gap flex-item-grow max-width border txt-ink",
           data: { action: "click->dialog#close", turbo_frame: "_top" },
           &)
@@ -33,11 +32,11 @@ module NotificationsHelper
 
   def notification_mark_read_button(notification)
     button_to read_notification_path(notification),
-      class: "notification__unread_indicator btn borderless",
-      title: "Mark as read",
-      data: { turbo_frame: "_top" } do
-        concat(image_tag("remove-med.svg", class: "unread_icon", size: 12, aria: { hidden: true }))
-        concat(tag.span("Mark as read", class: "for-screen-reader"))
+        class: "notification__unread_indicator btn borderless",
+        title: "Mark as read",
+        data: { turbo_frame: "_top" } do
+      concat(image_tag("remove-med.svg", class: "unread_icon", size: 12, aria: { hidden: true }))
+      concat(tag.span("Mark as read", class: "for-screen-reader"))
     end
   end
 
@@ -48,15 +47,16 @@ module NotificationsHelper
   end
 
   private
-    def notification_event_action(notification)
-      if notification_is_for_initial_assignement?(notification)
-        "assigned"
+    def event_notification_action(event)
+      if event.action.card_published? && event.eventable.assigned_to?(event.creator)
+        "card_assigned"
       else
-        notification.event.action
+        event.action
       end
     end
 
-    def notification_is_for_initial_assignement?(notification)
-      notification.event.action == "published" && notification.card.assigned_to?(notification.user)
+    def comment_notification_body(event)
+      comment = event.eventable
+      "#{strip_tags(comment.body_html).blank? ? "#{event.creator.name} replied" : "#{event.creator.name}:" } #{strip_tags(comment.body_html).truncate(200)}"
     end
 end

@@ -1,13 +1,29 @@
 logo_published_kevin:
   user: kevin
-  event: logo_published
-  card: logo
-  resource: logo (Card)
+  source: logo_published (Event)
   created_at: <%= 1.week.ago %>
+  creator: david
+
+logo_assignment_kevin:
+  user: kevin
+  source: logo_assignment_km (Event)
+  created_at: <%= 1.week.ago %>
+  creator: david
 
 layout_commented_kevin:
   user: kevin
-  event: layout_commented
-  card: layout
-  resource: layout_overflowing_david (Comment)
+  source: layout_commented (Event)
   created_at: <%= 1.week.ago %>
+  creator: david
+
+logo_card_david_mention_by_jz:
+  user: david
+  source: logo_card_david_mention_by_jz (Mention)
+  created_at: <%= 1.week.ago %>
+  creator: david
+
+logo_comment_david_mention_by_jz:
+  user: david
+  source: logo_comment_david_mention_by_jz (Mention)
+  created_at: <%= 1.week.ago %>
+  creator: david

@@ -14,11 +14,6 @@ development:
     <<: *default
     database: storage/tenants/<%= Rails.env %>/%{tenant}/db/main.sqlite3
     tenanted: true
-  primary_original:
-    <<: *default
-    database: storage/storage-production-20250311-1725.sqlite3
-    replica: true
-    readonly: true
   cable:
     <<: *default
     database: storage/development_cable.sqlite3

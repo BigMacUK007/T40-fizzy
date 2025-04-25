@@ -12,7 +12,7 @@ export default class extends Controller {
 
     for (const file of files) {
       const uploadEvent = new CustomEvent("house-md:before-upload", { 
-        cards: true, 
+        bubbles: true, 
         detail: { file },
         cancelable: true 
       })

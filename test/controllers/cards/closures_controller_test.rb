@@ -10,11 +10,10 @@ class Cards::ClosuresControllerTest < ActionDispatch::IntegrationTest
 
     assert_changes -> { card.reload.closed? }, from: false, to: true do
       post card_closure_path(card, reason: "Scope too big")
+      assert_card_container_rerendered(card)
     end
 
     assert_equal "Scope too big", card.closure.reason
-
-    assert_redirected_to collection_card_path(card.collection, card)
   end
 
   test "destroy" do
@@ -22,8 +21,7 @@ class Cards::ClosuresControllerTest < ActionDispatch::IntegrationTest
 
     assert_changes -> { card.reload.closed? }, from: true, to: false do
       delete card_closure_path(card)
+      assert_card_container_rerendered(card)
     end
-
-    assert_redirected_to collection_card_path(card.collection, card)
   end
 end

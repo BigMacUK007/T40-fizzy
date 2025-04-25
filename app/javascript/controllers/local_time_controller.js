@@ -2,7 +2,9 @@ import { Controller } from "@hotwired/stimulus"
 import { differenceInDays } from "helpers/date_helpers"
 
 export default class extends Controller {
-  static targets = [ "time", "date", "datetime", "shortdate", "ago", "indays", "daysago" ]
+  static targets = [ "time", "date", "datetime", "shortdate", "ago", "indays", "daysago", "agoorweekday" ]
+  static values = { refreshInterval: Number }
+  static classes = [ "local-time-value"]
 
   #timer
 
@@ -13,7 +15,10 @@ export default class extends Controller {
     this.dateTimeFormatter = new Intl.DateTimeFormat(undefined, { timeStyle: "short", dateStyle: "short" })
     this.agoFormatter = new AgoFormatter()
     this.daysagoFormatter = new DaysAgoFormatter()
+    this.datewithweekdayFormatter = new Intl.DateTimeFormat(undefined, { weekday: "long", month: "long", day: "numeric" })
+    this.datewithweekdayFormatter = new Intl.DateTimeFormat(undefined, { weekday: "long", month: "long", day: "numeric" })
     this.indaysFormatter = new InDaysFormatter()
+    this.agoorweekdayFormatter = new DaysAgoOrWeekdayFormatter()
   }
 
   connect() {
@@ -58,6 +63,10 @@ export default class extends Controller {
 
   daysagoTargetConnected(target) {
     this.#formatTime(this.daysagoFormatter, target)
+  }
+
+  agoorweekdayTargetConnected(target) {
+    this.#formatTime(this.agoorweekdayFormatter, target)
   }
 
   #refreshRelativeTimes() {
@@ -108,6 +117,18 @@ class DaysAgoFormatter {
     if (days <= 0) return styleableValue("today")
     if (days === 1) return styleableValue("yesterday")
     return `${styleableValue(days)} days ago`
+  }
+}
+
+class DaysAgoOrWeekdayFormatter {
+  format(date) {
+    const days = differenceInDays(date, new Date())
+
+    if (days <= 1) {
+      return new DaysAgoFormatter().format(date)
+    } else {
+      return new Intl.DateTimeFormat(undefined, { weekday: "long", month: "long", day: "numeric" }).format(date)
+    }
   }
 }
 

@@ -5,11 +5,11 @@ class FilterTest < ActiveSupport::TestCase
     Current.set session: sessions(:david) do
       @new_collection = Collection.create! name: "Inaccessible Collection"
       @new_card = @new_collection.cards.create!
-      @new_card.update!(stage: workflow_stages(:qa_triage))
+      @new_card.update!(stage: workflow_stages(:qa_on_hold))
 
       cards(:layout).capture Comment.new(body: "I hate haggis")
       cards(:logo).capture Comment.new(body: "I love haggis")
-      cards(:logo).update(stage: workflow_stages(:qa_triage))
+      cards(:logo).update(stage: workflow_stages(:qa_on_hold))
     end
 
     assert_not_includes users(:kevin).filters.new.cards, @new_card
@@ -17,7 +17,7 @@ class FilterTest < ActiveSupport::TestCase
     filter = users(:david).filters.new creator_ids: [ users(:david).id ], tag_ids: [ tags(:mobile).id ]
     assert_equal [ cards(:layout) ], filter.cards
 
-    filter = users(:david).filters.new stage_ids: [ workflow_stages(:qa_triage).id ]
+    filter = users(:david).filters.new stage_ids: [ workflow_stages(:qa_on_hold).id ]
     assert_equal [ cards(:logo), @new_card ], filter.cards
 
     filter = users(:david).filters.new assignment_status: "unassigned", collection_ids: [ @new_collection.id ]
@@ -38,6 +38,13 @@ class FilterTest < ActiveSupport::TestCase
     collections(:writebook).accesses.revoke_from users(:david)
 
     assert_empty users(:david).filters.new(collection_ids: [ collections(:writebook).id ]).cards
+  end
+
+  test "can't see collections that aren't accessible" do
+    collections(:writebook).update! all_access: false
+    collections(:writebook).accesses.revoke_from users(:david)
+
+    assert_empty users(:david).filters.new(collection_ids: [ collections(:writebook).id ]).collections
   end
 
   test "remembering equivalent filters" do

@@ -1,18 +1,20 @@
-<% cache [ card ] do %>
+<% cache card do %>
   <%= card_article_tag card, class: "card" do %>
     <header class="card__header flex align-center gap min-width">
       <span class="card__collection txt-uppercase overflow-ellipsis txt-reversed"><%= card.collection.name %></span>
       <%= render "cards/display/preview/tags", card: card %>
     </header>
 
-    <div class="card__body flex gap full-width flex-item-grow">
-      <h1 class="card__title">
-        <span class="card__title-link overflow-line-clamp"><%= card.title %></span>
-      </h1>
+    <div class="card__body flex gap full-width flex-item-grow justify-space-between">
+      <div class="card__content">
+        <h1 class="card__title overflow-line-clamp">
+          <%= card.title %>
+        </h1>
 
-      <%= link_to collection_card_path(card.collection, card), class: "card__link" do %>
-        <span class="for-screen-reader"><%= card.title %></span>
-      <% end %>
+        <%= link_to collection_card_path(card.collection, card), class: "card__link", data: { turbo_frame: "_top" } do %>
+          <span class="for-screen-reader"><%= card.title %></span>
+        <% end %>
+      </div>
 
       <%= render "cards/stagings/stages", card: card if card.doing? %>
     </div>

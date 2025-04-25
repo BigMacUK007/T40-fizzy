@@ -1,25 +1,26 @@
 logo:
   collection: writebook
   creator: david
+  stage: qa_triage
   title: The logo isn't big enough
   due_on: <%= 3.days.from_now %>
   created_at: <%= 1.week.ago %>
-  activity_score: 7
   status: published
   last_active_at: <%= Time.current %>
 
 layout:
   collection: writebook
   creator: david
+  stage: qa_triage
   title: Layout is broken
   created_at: <%= 1.week.ago %>
-  activity_score: 1
   status: published
   last_active_at: <%= Time.current %>
 
 text:
   collection: writebook
   creator: kevin
+  stage: qa_triage
   title: The text is too small
   created_at: <%= 1.week.ago %>
   status: published
@@ -29,6 +30,7 @@ text:
 shipping:
   collection: writebook
   creator: kevin
+  stage: qa_triage
   title: We need to ship the app
   created_at: <%= 1.week.ago %>
   status: published

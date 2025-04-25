@@ -1,8 +1,0 @@
-<%= turbo_stream.replace dom_id(@card, "stages") do %>
-  <%= render partial: "cards/stagings/stages", locals: { card: @card } %>
-<% end %>
-
-<%= turbo_stream.set_css_variable dom_id(@card, :card_closure_toggle), name: "--card-color", value: @card.color %>
-<%= turbo_stream.set_css_variable dom_id(@card, :card_container), name: "--card-color", value: @card.color %>
-<%= turbo_stream.set_css_variable dom_id(@card, :card_engagement_toggle), name: "--card-color", value: @card.color %>
-<%= turbo_stream.set_css_variable dom_id(@card, :ticket), name: "--card-color", value: @card.color %>

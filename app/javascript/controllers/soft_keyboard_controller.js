@@ -1,10 +1,10 @@
 import { Controller } from "@hotwired/stimulus"
 import { nextEventNamed } from "helpers/timing_helpers"
-import { isTouchDevice } from "helpers/navigator_helpers"
 
 export default class extends Controller {
+  // Only load for touch devices
   static get shouldLoad() {
-    return isTouchDevice()
+    return "ontouchstart" in window && navigator.maxTouchPoints > 0
   }
 
   // Use a fake input to trigger the soft keyboard on actions that load async content

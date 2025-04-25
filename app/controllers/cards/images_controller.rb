@@ -3,6 +3,6 @@ class Cards::ImagesController < ApplicationController
 
   def destroy
     @card.image.purge_later
-    redirect_to @card
+    render_card_replacement
   end
 end

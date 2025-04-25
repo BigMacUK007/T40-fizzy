@@ -5,15 +5,7 @@
     </div>
 
     <div class="flex flex-column min-width flex-item-grow">
-      <strong class="overflow-ellipsis notification__title txt-small txt-tight-lines"><%= notification_title(notification) %></strong>
-        <div class="overflow-ellipsis txt-small txt-tight-lines">
-          <% if notification.event.action == "commented" %>
-            <%= "#{strip_tags(notification.event.comment.body_html).blank? ? "#{notification.event.creator.name} replied" : "#{notification.event.creator.name}:" } #{strip_tags(notification.event.comment.body_html).truncate(200)}" %>
-          <% else %>
-            <%= notification_body(notification) %>
-          <% end %>
-        </div>
-      <div class="tray__item-meta overflow-ellipsis translucent"><%= notification.card.collection.name %> · <%= local_datetime_tag(notification.created_at, style: :ago) %></div>
+      <%= render "notifications/notification/#{notification.source_type.underscore}", notification: notification %>
     </div>
   <% end %>
 <% end %>

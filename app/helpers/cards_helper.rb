@@ -15,11 +15,12 @@ module CardsHelper
       **options
   end
 
-  def card_article_tag(card, id: dom_id(card, :ticket), **options, &block)
+  def card_article_tag(card, id: dom_id(card, :article), **options, &block)
     classes = [
       options.delete(:class),
       ("card--golden" if card.golden?),
-      ("card--doing" if card.doing?)
+      ("card--doing" if card.doing?),
+      ("card--drafted" if card.drafted?)
     ].compact.join(" ")
 
     tag.article \
@@ -28,5 +29,13 @@ module CardsHelper
       class: classes,
       **options,
       &block
+  end
+
+  def button_to_delete_card(card)
+    button_to collection_card_path(card.collection, card),
+        method: :delete, class: "btn txt-negative borderless txt-small", data: { turbo_frame: "_top", turbo_confirm: "Are you sure you want to permanently delete this card?" } do
+      concat(icon_tag("trash"))
+      concat(tag.span("Delete this card"))
+    end
   end
 end

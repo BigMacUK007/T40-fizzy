@@ -13,4 +13,8 @@ module CardScoped
     def set_collection
       @collection = @card.collection
     end
+
+    def render_card_replacement
+      render turbo_stream: turbo_stream.replace([ @card, :card_container ], partial: "cards/container", method: :morph, locals: { card: @card.reload })
+    end
 end

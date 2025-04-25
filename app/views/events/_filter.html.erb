@@ -1,30 +1,37 @@
-<% presenter = CollectionFilterPresenter.new(@collections, params, cookies) %>
-<div class="position-relative max-width margin-block-end-half"
+<div class="max-width margin-block-end-half"
 		data-controller="dialog" data-action="keydown.esc->dialog#close click@document->dialog#closeOnClickOutside">
-	<button class="events__filter-btn input input--select flex-inline center min-width max-width txt-small" data-action="click->dialog#open:stop">
+	<%= tag.button class:"events__filter-btn input input--select flex-inline center min-width max-width txt-small",
+			data: {
+				action: "click->dialog#open:stop keydown.meta+j@document->hotkey#click",
+				controller: "hotkey" } do %>
 		<span class="overflow-ellipsis center">
-			<%= presenter.filter_text %>
+			<%= filter_selected_collections_label(filter) %>
 		</span>
-	</button>
-
-	<dialog class="events__popup popup panel flex-column full-width align-start gap-half fill-white shadow"
-				style="z-index: 5; inset: 0 0 auto auto;" data-dialog-target="dialog" data-action="turbo:before-cache@document->dialog#close">
-		<strong class="popup__title margin-block-start-half pad-inline-half txt-nowrap">Filter by Collection…</strong>
-		<%= form_with url: events_path, method: :get, class: "flex flex-column full-width popup__list",
-					data: { controller: "form" } do |form| %>
-			<%= link_to "Show everything", events_path(clear_filter: true), class: "btn popup__item txt-nowrap" %>
-			<% @collections.each do |collection| %>
-				<div class="btn popup__item">
-					<%= form.check_box "collection_ids[]", {
-						checked: (params[:collection_ids] || cookies[:collection_filter]&.split(","))&.include?(collection.id.to_s),
-						data: { action: "change->form#submit" },
-						include_hidden: false,
-					}, collection.id %>
-
-					<%= form.label "collection_ids[]", collection.name, for: dom_id(collection, :filter), class: "overflow-ellipsis" %>
-					<%= icon_tag "check", class: "checked flex-item-justify-end" %>
-				</div>
-			<% end %>
 		<% end %>
-	</dialog>
+
+	<%= tag.dialog class: "events__popup popup popup--animated panel flex-column align-start gap-half fill-white shadow", 
+			style: "z-index: 5;", 
+			data: { 
+				action: "turbo:before-cache@document->dialog#close",
+				controller: "filter", 
+				dialog_target: "dialog",
+				filter_active_class: "filter--active", 
+				filter_selected_class: "selected" } do %>
+		<%= render "events/filter/header" %>
+		<%= render "events/filter/new_collection_option" %>
+		<% if Current.user.collections.count > 15 %>
+			<input placeholder="Find a collection…" class="input input--transparent txt-small" type="search" autocorrect="off" autocomplete="off" data-1p-ignore="true" data-action="input->filter#filter" autofocus>
+		<% end %>
+		<%= form_with url: events_path, method: :get, class: "flex flex-column max-width popup__list full-width",
+					data: { controller: "form" } do |form| %>
+			<%= render "events/filter/all_collections_option", form: form, filter: filter %>
+			<menu data-filter-target="list" contents>
+				<%= render partial: "events/filter/collection_option", collection: Current.user.collections, as: :collection, locals: { form: form, filter: filter } %>
+			</menu>
+		<% end %>
+
+		<p class="txt-small txt-nowrap txt-align-center margin-block-half full-width">
+			Press <kbd class="kbd">⌘j</kbd> anytime to open this, <kbd class="kbd">esc</kbd> to close.
+		</p>
+	<% end %>
 </div>

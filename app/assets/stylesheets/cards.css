@@ -105,18 +105,45 @@
     padding-block: var(--card-padding-block);
   }
 
+  .card__description {
+    house-md-toolbar,
+    .house-md-content {
+      color: color-mix(in srgb, var(--card-color) 40%, var(--color-ink));
+    }
+
+    .house-md-content {
+      min-block-size: 3lh;
+      padding: var(--block-space-half) var(--inline-space) 0 0;
+    }
+
+    & ~ .btn {
+      --btn-background: var(--card-color);
+      --btn-color: var(--color-ink-reversed);
+    }
+  }
+
+  .card__content {
+    flex: 2 1 auto;
+  }
+
   .card__title {
     --hover-size: 0;
     --input-border-radius: 0;
+    --input-color: color-mix(in srgb, var(--card-color) 40%, var(--color-ink));
+    --lines: 3;
 
-    flex: 2 1 75%;
+    color: inherit;
     font-size: var(--text-xx-large);
     font-weight: 900;
-    line-height: 1.1;
+    line-height: 1.2;
     min-block-size: 3lh;
     text-wrap: balance;
 
-    .card__title-field {
+    .card-perma__bg & {
+      min-block-size: unset;
+    }
+
+    .card-field__title {
       &:is(textarea)::placeholder {
         color: inherit;
         opacity: 0.5;
@@ -124,23 +151,34 @@
     }
 
     .card__title-link {
-      --lines: 3;
-
       color: inherit;
     }
   }
 
   .card__stages {
     display: flex;
-    flex: 1 1 25%;
+    flex: 0 1 auto;
     flex-direction: column;
-    max-width: 100%;
-    min-width: 0;
-    padding-block: var(--block-space);
+    justify-self: end;
+    max-inline-size: 20ch;
+    padding-block: var(--block-space-half);
+  }
+
+  .card--new-card-button:is(.btn) {
+    --btn-padding: var(--block-space) var(--inline-space-double);
+    --btn-border-size: 0;
+    --btn-color: var(--color-link);
+    --btn-icon-size: 1em;
+    --card-padding-block: calc(var(--block-space) * 1.25);
+
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-link) 20%, var(--color-bg));
+    color: var(--btn-color);
+    font-weight: 700;
+    
   }
 
   .card__move-button {
-    --btn-background: color-mix(in srgb, var(--card-color) 40%, var(--color-ink));
+    --btn-background: color-mix(in srgb, inherit 40%, var(--color-ink));
 
     margin-block-start: calc(var(--block-space) * 1.2);
     margin-inline-end: calc(var(--inline-space) * -4);
@@ -192,16 +230,25 @@
 
   .card__closed {
     align-items: center;
-    aspect-ratio: 7/4;
+    aspect-ratio: 8/5;
+    background-color: var(--color-bg);
     border: var(--block-space-half) solid var(--card-color);
+    border-radius: 0.2em;
+    color: var(--card-color);
     display: flex;
     flex-direction: column;
     inset: auto var(--block-space) var(--block-space-double) auto;
     justify-content: space-between;
+    max-inline-size: 25ch;
+    min-inline-size: 18ch;
+    mix-blend-mode: multiply;
     padding: var(--block-space-half) calc(var(--inline-space) * 1.5);
     position: absolute;
     transform: rotate(-10deg);
-    z-index: -1;
+
+    @media (prefers-color-scheme: dark) {
+      mix-blend-mode: screen;
+    }
   }
 
   .card__closed-by {
@@ -210,8 +257,10 @@
 
   .card__closed-title {
     color: var(--color-ink-inverted);
-    font-size: var(--text-rel-large);
+    font-size: 1.5em;
     font-weight: 900;
+    line-height: 1.2;
+    text-align: center;
     text-shadow:
      -2px -2px 0 var(--card-color),
       2px -2px 0 var(--card-color),

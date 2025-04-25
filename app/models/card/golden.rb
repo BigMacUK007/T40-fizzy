@@ -2,10 +2,9 @@ module Card::Golden
   extend ActiveSupport::Concern
 
   included do
-    scope :golden, -> { joins(:goldness) }
-
     has_one :goldness, dependent: :destroy, class_name: "Card::Goldness"
 
+    scope :golden, -> { joins(:goldness) }
     scope :with_golden_first, -> { left_outer_joins(:goldness).prepend_order("card_goldnesses.id IS NULL") }
   end
 

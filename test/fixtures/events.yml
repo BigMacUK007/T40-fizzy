@@ -1,66 +1,74 @@
 logo_published:
   creator: david
-  card: logo
-  action: published
+  collection: writebook
+  eventable: logo (Card)
+  action: card_published
   summary: logo_initial_activity
   created_at: <%= 1.week.ago %>
 
 logo_assignment_jz:
   creator: david
-  card: logo
-  action: assigned
+  collection: writebook
+  eventable: logo (Card)
+  action: card_assigned
   summary: logo_initial_activity
   particulars: <%= { assignee_ids: [ ActiveRecord::FixtureSet.identify(:jz) ] }.to_json %>
   created_at: <%= 1.week.ago + 1.hour %>
 
 logo_assignment_km:
   creator: david
-  card: logo
-  action: assigned
+  collection: writebook
+  eventable: logo (Card)
+  action: card_assigned
   summary: logo_second_activity
   particulars: <%= { assignee_ids: [ ActiveRecord::FixtureSet.identify(:kevin) ] }.to_json %>
   created_at: <%= 1.day.ago %>
 
 layout_published:
   creator: david
-  card: layout
-  action: published
+  collection: writebook
+  eventable: layout (Card)
+  action: card_published
   summary: layout_initial_activity
   created_at: <%= 1.week.ago %>
 
 layout_commented:
   creator: david
-  card: layout
-  action: commented
+  collection: writebook
+  eventable: layout_overflowing_david (Comment)
+  action: comment_created
   summary: layout_initial_activity
-  particulars: <%= { comment_id: ActiveRecord::FixtureSet.identify(:layout_overflowing_david) }.to_json %>
   created_at: <%= 1.week.ago %>
 
 layout_assignment_jz:
   creator: david
-  card: layout
-  action: assigned
+  collection: writebook
+  eventable: layout (Card)
+  action: card_assigned
   summary: layout_initial_activity
   particulars: <%= { assignee_ids: [ ActiveRecord::FixtureSet.identify(:jz) ] }.to_json %>
   created_at: <%= 1.hour.ago %>
 
 text_published:
   creator: kevin
-  card: text
-  action: published
+  collection: writebook
+  eventable: text (Card)
+  action: card_published
   summary: text_initial_activity
   created_at: <%= 1.week.ago %>
 
 shipping_published:
   creator: kevin
-  card: shipping
-  action: published
+  collection: writebook
+  eventable: shipping (Card)
+  action: card_published
   summary: shipping_initial_activity
   created_at: <%= 1.week.ago %>
 
 shipping_closed:
   creator: kevin
-  card: shipping
-  action: closed
+  collection: writebook
+  eventable: shipping (Card)
+  action: card_closed
   summary: shipping_initial_activity
   created_at: <%= 2.days.ago %>

@@ -3,11 +3,11 @@ class Cards::GoldnessesController < ApplicationController
 
   def create
     @card.gild
-    redirect_to @card
+    render_card_replacement
   end
 
   def destroy
     @card.ungild
-    redirect_to @card
+    render_card_replacement
   end
 end

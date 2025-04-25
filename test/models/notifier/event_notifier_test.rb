@@ -1,0 +1,81 @@
+require "test_helper"
+
+class Notifier::EventNotifierTest < ActiveSupport::TestCase
+  test "for returns the matching notifier class for the event" do
+    assert_kind_of Notifier::CardEventNotifier, Notifier.for(events(:logo_published))
+  end
+
+  test "generate does not create notifications if the event was system-generated" do
+    cards(:logo).drafted!
+    events(:logo_published).update!(creator: User.system)
+
+    assert_no_difference -> { Notification.count } do
+      Notifier.for(events(:logo_published)).notify
+    end
+  end
+
+  test "creates a notification for each watcher, other than the event creator (events)" do
+    notifications = Notifier.for(events(:layout_commented)).notify
+
+    assert_equal [ users(:kevin) ], notifications.map(&:user)
+  end
+
+  test "creates a notification for each watcher (mentions)" do
+    notifications = Notifier.for(events(:layout_commented)).notify
+
+    assert_equal [ users(:kevin) ], notifications.map(&:user)
+  end
+
+  test "does not create a notification for access-only users" do
+    collections(:writebook).access_for(users(:kevin)).access_only!
+
+    notifications = Notifier.for(events(:layout_commented)).notify
+
+    assert_equal [ users(:kevin) ], notifications.map(&:user)
+  end
+
+  test "the published event creates notifications for subscribers as well as watchers" do
+    notifications = Notifier.for(events(:logo_published)).notify
+
+    assert_equal users(:kevin, :jz).sort, notifications.map(&:user).sort
+  end
+
+  test "links to the card" do
+    Notifier.for(events(:logo_published)).notify
+
+    assert_equal cards(:logo), Notification.last.source.eventable
+  end
+
+  test "assignment events only create a notification for the assignee" do
+    collections(:writebook).access_for(users(:jz)).watching!
+    collections(:writebook).access_for(users(:kevin)).everything!
+
+    notifications = Notifier.for(events(:logo_assignment_jz)).notify
+
+    assert_equal [ users(:jz) ], notifications.map(&:user)
+  end
+
+  test "assignment events do not notify users who are access-only for the collection" do
+    collections(:writebook).access_for(users(:jz)).access_only!
+
+    notifications = Notifier.for(events(:logo_assignment_jz)).notify
+
+    assert_empty notifications
+  end
+
+  test "don't create notifications on publish for mentionees" do
+    users(:kevin).mentioned_by(users(:david), at: cards(:logo))
+
+    assert_no_difference -> { users(:kevin).notifications.count } do
+      Notifier.for(events(:logo_published)).notify
+    end
+  end
+
+  test "don't create notifications on comment for mentionees" do
+    users(:david).mentioned_by(users(:kevin), at: cards(:layout))
+
+    assert_no_difference -> { users(:david).notifications.count } do
+      Notifier.for(events(:layout_commented)).notify
+    end
+  end
+end

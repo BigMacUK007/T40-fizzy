@@ -1,5 +1,5 @@
 class Comment < ApplicationRecord
-  include Messageable, Searchable
+  include Eventable, Mentions, Messageable, Searchable
 
   belongs_to :creator, class_name: "User", default: -> { Current.user }
   has_many :reactions, dependent: :delete_all
@@ -10,8 +10,10 @@ class Comment < ApplicationRecord
   # FIXME: Not a fan of this. Think all references to comment should come directly from the message.
   scope :belonging_to_card, ->(card) { joins(:message).where(messages: { card_id: card.id }) }
 
-  after_create_commit :watch_card_by_creator, :track_commented_card
+  after_create_commit :watch_card_by_creator
   after_destroy_commit :cleanup_events
+
+  delegate :watch_by, to: :card
 
   def to_partial_path
     "cards/#{super}"
@@ -20,10 +22,6 @@ class Comment < ApplicationRecord
   private
     def watch_card_by_creator
       card.watch_by creator
-    end
-
-    def track_commented_card
-      card.track_event :commented, comment_id: id
     end
 
     # FIXME: This isn't right. We need to introduce an eventable polymorphic association for this.

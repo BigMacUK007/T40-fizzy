@@ -5,8 +5,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     sign_in_as :kevin
 
     get users_path
-    assert_match /#{users(:david).name}/, @response.body
-    assert_match /#{users(:kevin).name}/, @response.body
+    assert_in_body users(:david).name
+    assert_in_body users(:kevin).name
   end
 
   test "new" do
@@ -32,7 +32,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     sign_in_as :kevin
 
     get user_path(users(:david))
-    assert_match /#{users(:david).name}/, @response.body
+    assert_in_body users(:david).name
   end
 
   test "update oneself" do

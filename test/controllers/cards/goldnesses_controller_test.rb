@@ -6,22 +6,16 @@ class Cards::GoldnessesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "create" do
-    card = cards(:text)
-
-    assert_changes -> { card.reload.golden? }, from: false, to: true do
-      post card_goldness_path(card)
+    assert_changes -> { cards(:text).reload.golden? }, from: false, to: true do
+      post card_goldness_path(cards(:text)), as: :turbo_stream
+      assert_card_container_rerendered(cards(:text))
     end
-
-    assert_redirected_to collection_card_path(card.collection, card)
   end
 
   test "destroy" do
-    card = cards(:logo)
-
-    assert_changes -> { card.reload.golden? }, from: true, to: false do
-      delete card_goldness_path(card)
+    assert_changes -> { cards(:logo).reload.golden? }, from: true, to: false do
+      delete card_goldness_path(cards(:logo)), as: :turbo_stream
+      assert_card_container_rerendered(cards(:logo))
     end
-
-    assert_redirected_to collection_card_path(card.collection, card)
   end
 end

@@ -3,11 +3,11 @@ class Cards::EngagementsController < ApplicationController
 
   def create
     @card.engage
-    redirect_to @card
+    render_card_replacement
   end
 
   def destroy
     @card.reconsider
-    redirect_to @card
+    render_card_replacement
   end
 end

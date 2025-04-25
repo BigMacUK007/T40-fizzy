@@ -1,7 +1,7 @@
-<div id="<%= dom_id(card, :tags) %>" class="card__tags flex-item-grow min-width">
+<div id="<%= dom_id(card, :tags) %>" class="card__tags flex-item-grow min-width gap-half">
   <div class="overflow-ellipsis">
     <% if card.tags.any? || card.creating? %>
-      <span># </span>
+      <span class="margin-inline-start-half"># </span>
       <% card.tags.each_with_index do |tag, index| %>
         <%= link_to cards_path(collection_ids: [ card.collection ], tag_ids: [ tag.id ]),
               class: "card__tag btn btn--plain min-width txt-uppercase fill-transparent" do %>
@@ -12,7 +12,7 @@
   </div>
 
   <div class="position-relative" data-controller="dialog" data-action="keydown.esc->dialog#close click@document->dialog#closeOnClickOutside" <%= "hidden" if card.closed? %>>
-    <button class="tag-picker__button btn card__hide-on-index <%= card.creating? || card.drafted? ? "fill-highlight" : "fill-transparent" %>" data-action="click->dialog#open:stop">
+    <button class="tag-picker__button btn card__hide-on-index fill-transparent" data-action="click->dialog#open:stop">
       <%= icon_tag "tag" %>
       <span class="for-screen-reader">Add a tag</span>
     </button>

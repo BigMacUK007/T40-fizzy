@@ -1,6 +1,6 @@
 <%= turbo_frame_tag dom_id(@comment) do %>
   <div class="comment__content comment--edit flex-inline flex-column full-width">
-    <div class="comment__body txt-align-start">
+    <div class="comment__body markdown-content txt-align-start">
       <%= form_with model: [ @card, @comment ], class: "flex flex-column gap full-width",
             data: { controller: "form paste", action: "keydown.ctrl+enter->form#submit:prevent keydown.meta+enter->form#submit:prevent keydown.esc->form#cancel:stop paste->paste#pasteFiles" } do |form| %>
         <%= form.markdown_area :body, class: "input comment__input", required: true, autofocus: true, placeholder: new_comment_placeholder(@card) %>
@@ -9,7 +9,7 @@
             <span>Save changes</span>
           <% end %>
           <%= link_to card_comment_path(@card, @comment), class: "btn", data: { form_target: "cancel" } do %>
-            <span">Cancel</span>
+            <span>Cancel</span>
           <% end %>
 
           <%= tag.button type: :submit, class: "btn btn--negative flex-item-justify-end", form: dom_id(@comment, :delete_form),

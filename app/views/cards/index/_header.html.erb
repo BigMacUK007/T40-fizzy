@@ -1,22 +1,46 @@
 <nav class="align-start">
   <%= link_to_home %>
 
-  <div class="btn btn--placeholder"></div>
   <div class="btn btn--placeholder flex-item-justify-start"></div>
 
   <header class="flex flex-inline flex-column center flex-shrink">
-    <div class="card-filter--collection flex-inline center position-relative" data-controller="dialog" data-action="keydown.esc->dialog#close click@document->dialog#closeOnClickOutside">
-      <button class="txt-align-center input input--select borderless center txt-medium" data-action="click->dialog#open:stop">
+    <div class="card-filter--collection flex-inline align-center center position-relative" data-controller="dialog" data-action="click@document->dialog#closeOnClickOutside">
+      <%= tag.button class: "txt-align-center input input--select borderless txt-medium",
+          data: {
+            action: "click->dialog#open:stop keydown.meta+j@document->hotkey#click",
+            controller: "hotkey" } do %>
         <h1 class="txt-large overflow-ellipsis margin-none">
-          <%= filter_title filter %>
+          <span><%= filter_title filter %></span>
         </h1>
-      </button>
+      <% end %>
 
-      <dialog class="events__popup popup panel flex-column align-start gap-half fill-white shadow" data-dialog-target="dialog" data-action="turbo:before-cache@document->dialog#close">
-        <strong class="popup__title margin-block-start-half pad-inline-half">In Collection</strong>
-
-        <%= render "cards/index/collections_filter", filter: filter %>
-      </dialog>
+      <%= tag.dialog class:"popup popup--animated panel flex-column align-start gap-half fill-white shadow",
+          data: { 
+            action:"keydown.esc->dialog#close:stop turbo:before-cache@document->dialog#close",
+            controller: "filter", 
+            dialog_target: "dialog",
+            filter_active_class: "filter--active", 
+            filter_selected_class: "selected" } do %>
+        <div class="flex align-center full-width gap-half">
+          <span class="btn borderless" style="pointer-events: none; --icon-size: 1.3em; --btn-padding: 0 0.4em 0 0.6em;">
+            <%= icon_tag "filter" %>
+          </span>
+          <strong class="popup__title txt-medium">Collections</strong>
+          <button class="btn borderless txt-x-small flex-item-justify-end" data-action="click->dialog#close" >
+            <%= icon_tag "remove-med" %>
+            <span class="for-screen-reader">Close</span>
+          </button>
+        </div>
+        <% if Current.user.collections.count > 15 %>
+          <input placeholder="Find a collection…" class="input input--transparent txt-small" type="search" autocorrect="off" autocomplete="off" data-1p-ignore="true" data-action="input->filter#filter" autofocus=>
+        <% end %>
+        <menu data-filter-target="list" contents>
+          <%= render "cards/index/collections_filter", filter: filter %>
+        </menu>
+        <p class="txt-small txt-nowrap txt-align-center margin-block-half full-width">
+          Press <kbd class="kbd">⌘j</kbd> anytime to open this, <kbd class="kbd">esc</kbd> to close.
+        </p>
+      <% end %>
     </div>
   </header>
 
@@ -28,11 +52,6 @@
     <%= link_to edit_collection_path(collection), class: "btn" do %>
       <%= icon_tag "settings" %>
       <span class="for-screen-reader">Settings for <%= collection.name %></span>
-    <% end %>
-
-    <%= button_to collection_cards_path(collection), method: :post, class: "btn" do %>
-      <%= icon_tag "add" %>
-      <span class="for-screen-reader">Create a new card</span>
     <% end %>
   <% else %>
     <div class="btn btn--placeholder flex-item-justify-end"></div>

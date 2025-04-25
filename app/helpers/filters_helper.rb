@@ -21,9 +21,19 @@ module FiltersHelper
     hidden_field_tag name, value, id: nil
   end
 
+  def filter_selected_collections_label(filter)
+    selected_collections = if filter.collections.any?
+      filter.collections.collect { "<strong>#{it.name}</strong>" }.uniq.sort.to_sentence
+    else
+      "all collections"
+    end
+
+    "Activity in #{selected_collections}".html_safe
+  end
+
   def any_filters?(filter)
     filter.tags.any? || filter.assignees.any? || filter.creators.any? ||
-    filter.stages.any? || filter.terms.any? ||
-    filter.assignment_status.unassigned? || !filter.default_indexed_by?
+      filter.stages.any? || filter.terms.any? ||
+      filter.assignment_status.unassigned? || !filter.default_indexed_by?
   end
 end

@@ -6,5 +6,6 @@ class Cards::AssignmentsController < ApplicationController
 
   def create
     @card.toggle_assignment @collection.users.active.find(params[:assignee_id])
+    render_card_replacement
   end
 end

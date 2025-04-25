@@ -85,6 +85,19 @@
     list-style: none;
   }
 
+  kbd {
+    border: 1px solid;
+    border-radius: .3em;
+    box-shadow: 0 0.1em 0 currentColor;
+    font-family: var(--font-mono);
+    font-size: var(--text-x-small);
+    font-weight: 600;
+    opacity: 0.7;
+    padding: 0em 0.4em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
   video {
     max-inline-size: 100%;
   }

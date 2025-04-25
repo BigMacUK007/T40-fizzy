@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_04_15_131804) do
+ActiveRecord::Schema[8.1].define(version: 2025_04_25_092727) do
   create_table "accesses", force: :cascade do |t|
     t.integer "collection_id", null: false
     t.datetime "created_at", null: false
@@ -108,9 +108,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_04_15_131804) do
   end
 
   create_table "cards", force: :cascade do |t|
-    t.float "activity_score", default: 0.0, null: false
-    t.datetime "activity_score_at"
-    t.float "activity_score_order", default: 0.0, null: false
     t.integer "collection_id", null: false
     t.datetime "created_at", null: false
     t.integer "creator_id", null: false
@@ -120,7 +117,6 @@ ActiveRecord::Schema[8.1].define(version: 2025_04_15_131804) do
     t.text "status", default: "creating", null: false
     t.string "title"
     t.datetime "updated_at", null: false
-    t.index ["activity_score_order"], name: "index_cards_on_activity_score_order"
     t.index ["collection_id"], name: "index_cards_on_collection_id"
     t.index ["last_active_at", "status"], name: "index_cards_on_last_active_at_and_status"
     t.index ["stage_id"], name: "index_cards_on_stage_id"
@@ -145,11 +141,13 @@ ActiveRecord::Schema[8.1].define(version: 2025_04_15_131804) do
 
   create_table "collections", force: :cascade do |t|
     t.boolean "all_access", default: false, null: false
+    t.bigint "auto_close_period"
     t.datetime "created_at", null: false
     t.integer "creator_id", null: false
     t.string "name", null: false
     t.datetime "updated_at", null: false
     t.integer "workflow_id"
+    t.index ["auto_close_period"], name: "index_collections_on_auto_close_period"
     t.index ["creator_id"], name: "index_collections_on_creator_id"
     t.index ["workflow_id"], name: "index_collections_on_workflow_id"
   end
@@ -181,15 +179,17 @@ ActiveRecord::Schema[8.1].define(version: 2025_04_15_131804) do
 
   create_table "events", force: :cascade do |t|
     t.string "action", null: false
-    t.integer "card_id", null: false
+    t.integer "collection_id", null: false
     t.datetime "created_at", null: false
     t.integer "creator_id", null: false
-    t.date "due_date"
+    t.integer "eventable_id", null: false
+    t.string "eventable_type", null: false
     t.json "particulars", default: {}
-    t.integer "summary_id", null: false
+    t.integer "summary_id"
     t.datetime "updated_at", null: false
-    t.index ["card_id"], name: "index_events_on_card_id"
+    t.index ["collection_id"], name: "index_events_on_collection_id"
     t.index ["creator_id"], name: "index_events_on_creator_id"
+    t.index ["eventable_type", "eventable_id"], name: "index_events_on_eventable"
     t.index ["summary_id", "action"], name: "index_events_on_summary_id_and_action"
   end
 
@@ -216,6 +216,18 @@ ActiveRecord::Schema[8.1].define(version: 2025_04_15_131804) do
     t.index ["tag_id"], name: "index_filters_tags_on_tag_id"
   end
 
+  create_table "mentions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "mentionee_id", null: false
+    t.integer "mentioner_id", null: false
+    t.integer "source_id", null: false
+    t.string "source_type", null: false
+    t.datetime "updated_at", null: false
+    t.index ["mentionee_id"], name: "index_mentions_on_mentionee_id"
+    t.index ["mentioner_id"], name: "index_mentions_on_mentioner_id"
+    t.index ["source_type", "source_id"], name: "index_mentions_on_source"
+  end
+
   create_table "messages", force: :cascade do |t|
     t.integer "card_id", null: false
     t.datetime "created_at", null: false
@@ -227,17 +239,15 @@ ActiveRecord::Schema[8.1].define(version: 2025_04_15_131804) do
   end
 
   create_table "notifications", force: :cascade do |t|
-    t.integer "card_id", null: false
     t.datetime "created_at", null: false
-    t.integer "event_id", null: false
+    t.integer "creator_id"
     t.datetime "read_at"
-    t.integer "resource_id", null: false
-    t.string "resource_type", null: false
+    t.integer "source_id", null: false
+    t.string "source_type", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
-    t.index ["card_id"], name: "index_notifications_on_card_id"
-    t.index ["event_id"], name: "index_notifications_on_event_id"
-    t.index ["resource_type", "resource_id"], name: "index_notifications_on_resource"
+    t.index ["creator_id"], name: "index_notifications_on_creator_id"
+    t.index ["source_type", "source_id"], name: "index_notifications_on_source"
     t.index ["user_id", "read_at", "created_at"], name: "index_notifications_on_user_id_and_read_at_and_created_at", order: { read_at: :desc, created_at: :desc }
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
@@ -330,12 +340,13 @@ ActiveRecord::Schema[8.1].define(version: 2025_04_15_131804) do
   add_foreign_key "closures", "cards"
   add_foreign_key "closures", "users"
   add_foreign_key "collections", "workflows"
-  add_foreign_key "events", "cards"
+  add_foreign_key "events", "collections"
   add_foreign_key "events", "event_summaries", column: "summary_id"
+  add_foreign_key "mentions", "users", column: "mentionee_id"
+  add_foreign_key "mentions", "users", column: "mentioner_id"
   add_foreign_key "messages", "cards"
-  add_foreign_key "notifications", "cards"
-  add_foreign_key "notifications", "events"
   add_foreign_key "notifications", "users"
+  add_foreign_key "notifications", "users", column: "creator_id"
   add_foreign_key "pins", "cards"
   add_foreign_key "pins", "users"
   add_foreign_key "sessions", "users"

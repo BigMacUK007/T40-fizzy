@@ -26,17 +26,17 @@ Rails.application.routes.draw do
   resources :cards do
     scope module: :cards do
       resource :engagement
+      resource :goldness
       resource :image
       resource :pin
       resource :closure
       resource :publish
       resource :reading
       resource :recover
+      resource :staging
       resource :watch
-      resource :goldness
 
       resources :assignments
-      resources :stagings
       resources :taggings
 
       resources :comments do
@@ -103,6 +103,17 @@ Rails.application.routes.draw do
     route_for :collection_card, comment.card.collection, comment.card, options
   end
 
+  resolve "Mention" do |mention, options|
+    polymorphic_path(mention.source, options)
+  end
+
+  resolve "Notification" do |notification, options|
+    polymorphic_path(notification.notifiable_target, options)
+  end
+
+  resolve "Event" do |event, options|
+    polymorphic_path(event.target, options)
+  end
 
   get "up", to: "rails/health#show", as: :rails_health_check
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest

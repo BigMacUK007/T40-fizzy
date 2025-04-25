@@ -8,4 +8,20 @@
     max-inline-size: 100%;
     padding: var(--panel-padding, calc(var(--block-space) * 2));
   }
+
+  .panels--two-up {
+    --panel-size: auto;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--block-space-double);
+    align-content: start;
+    max-inline-size: min(100ch, 100%);
+    margin: auto;
+
+    .panel {
+      flex: 1 1 33%;
+      min-inline-size: 36ch;
+    }
+  }
 }

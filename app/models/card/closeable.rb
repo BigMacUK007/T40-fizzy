@@ -1,16 +1,17 @@
 module Card::Closeable
   extend ActiveSupport::Concern
 
-  AUTO_CLOSE_AFTER = 30.days
-
   included do
     has_one :closure, dependent: :destroy
 
     scope :closed, -> { joins(:closure) }
-    scope :active, -> { where.missing(:closure) }
+    scope :open, -> { where.missing(:closure) }
 
     scope :recently_closed_first, -> { closed.order("closures.created_at": :desc) }
-    scope :due_to_be_closed, -> { considering.where(last_active_at: ..AUTO_CLOSE_AFTER.ago) }
+    scope :in_auto_closing_collection, -> { joins(:collection).merge(Collection.auto_closing) }
+    scope :due_to_be_closed, -> { considering.in_auto_closing_collection.where("last_active_at <= DATETIME('now', '-' || auto_close_period || ' seconds')") }
+
+    delegate :auto_closing?, :auto_close_period, to: :collection
   end
 
   class_methods do
@@ -22,14 +23,14 @@ module Card::Closeable
   end
 
   def auto_close_at
-    last_active_at + AUTO_CLOSE_AFTER if last_active_at
+    last_active_at + auto_close_period if auto_closing? && last_active_at
   end
 
   def closed?
     closure.present?
   end
 
-  def active?
+  def open?
     !closed?
   end
 

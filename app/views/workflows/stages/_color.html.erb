@@ -13,7 +13,7 @@
     </form>
 
     <%= form_with model: stage, url: workflow_stage_path(stage.workflow, stage), class: "flex gap-half", data: { controller: "form", action: "change->form#submit" } do |form| %>
-      <% Colorable::COLORS.each do |color| %>
+      <% Card::COLORS.each do |color| %>
         <span class="color-picker__color">
           <label class="btn btn--circle txt-small borderless" style="--btn-background: <%= color %>" title="<%= color %>">
             <%= form.radio_button :color, color %>

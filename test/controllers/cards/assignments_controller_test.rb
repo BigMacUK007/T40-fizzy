@@ -13,12 +13,12 @@ class Cards::AssignmentsControllerTest < ActionDispatch::IntegrationTest
   test "create" do
     assert_changes "cards(:logo).assigned_to?(users(:david))", from: false, to: true do
       post card_assignments_path(cards(:logo)), params: { assignee_id: users(:david).id }, as: :turbo_stream
+      assert_card_container_rerendered(cards(:logo))
     end
-    assert_response :success
 
     assert_changes "cards(:logo).assigned_to?(users(:david))", from: true, to: false do
       post card_assignments_path(cards(:logo)), params: { assignee_id: users(:david).id }, as: :turbo_stream
+      assert_card_container_rerendered(cards(:logo))
     end
-    assert_response :success
   end
 end

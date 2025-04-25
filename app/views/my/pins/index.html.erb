@@ -1,7 +1,3 @@
 <%= turbo_frame_tag "pins" do %>
-  <% @pins.map(&:card).each do |card| %>
-    <div class="pin tray__item">
-      <%= render partial: "cards/display/preview", locals: { card: card } %>
-    </div>
-  <% end %>
+  <%= render partial: "my/pins/pin", collection: @pins %>
 <% end %>

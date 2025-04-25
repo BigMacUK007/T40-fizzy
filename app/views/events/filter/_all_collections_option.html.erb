@@ -1,0 +1,17 @@
+<div class="popup__group flex align-center" style="--hover-size: 0">
+  <div class="btn txt-xx-small flex-item-no-shrink">
+    <%= link_to events_path(clear_filter: true), style: "--hover-size: 0" do %>
+      <%= check_box_tag "filter_collections", nil, filter.collections.blank?, class: "form-checkbox" %>
+    <% end %>
+
+    <span class="for-screen-reader">
+			See everything in all collections
+		</span>
+    <%= icon_tag "check", size: 18, class: "checked" %>
+  </div>
+
+	<%= link_to cards_path(filter.as_params.except(:collection_ids)), class: "btn popup__item min-width flex-item-grow" do %>
+    <span class="overflow-ellipsis">All collections</span>
+  <% end %>
+  <span class="txt-ink translucent flex-item-no-shrink"><span class="txt-x-small txt-uppercase">GO TO</span> ›</span>
+</div>

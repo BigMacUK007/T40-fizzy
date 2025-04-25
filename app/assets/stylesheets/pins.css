@@ -31,6 +31,7 @@
       --text-xx-large: 2em;
 
       border: 1px solid var(--color-canvas);
+      view-transition-name: unset !important;
     }
 
     .card__collection {
@@ -42,14 +43,16 @@
       padding-block-end: 0;
     }
 
+    .card__link {
+      z-index: 1;
+    }
+
     .card__title {
+      --lines: 1;
+    
       font-size: var(--text-small);
       font-weight: bold;
       min-block-size: 0;
-    }
-
-    .card__title-link {
-      --lines: 1;
     }
 
     .card__stages {

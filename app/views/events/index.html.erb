@@ -6,7 +6,7 @@
 
     <div class="events__index-header flex-inline flex-column center gap-half margin-block-end-double txt-align-center">
       <h2 class="txt-large txt-nowrap center"><%= Account.sole.name %> / Latest activity</h2>
-      <%= render "events/filter" %>
+      <%= render "events/filter", filter: @filter %>
     </div>
 
     <%= link_to users_path, class: "btn flex-item-justify-end" do %>
@@ -17,36 +17,10 @@
 <% end %>
 
 <div class="events__container align-start gap">
-  <div class="txt-align-start">
-    <h2 class="txt-normal txt-uppercase txt-nowrap">Custom views</h2>
-    <div style="border-block-start: 1px solid var(--color-ink-lighter); padding-block-start: var(--block-space-half);">
-      <% @filters.each do |filter| %>
-        <h3 class="txt-small margin-block-end-half txt-tight-lines">
-          <%= link_to filter.summary, cards_path(**filter.as_params) %>
-        </h3>
-      <% end %>
-    </div>
-  </div>
   <div class="flex flex-column">
     <div id="activity" class="events__index flex flex-column">
-      <%= render "events/day", activity_day: @activity_day, next_day: @next_day, events: @events %>
+      <%= render "events/day", day_timeline: @day_timeline %>
     </div>
-    <%= event_next_page_link(@next_day) %>
-  </div>
-
-  <div class="txt-align-start">
-    <div class="flex align-start gap min-width" >
-      <h2 class="txt-normal txt-uppercase overflow-ellipsis">Collections</h2>
-      <%= link_to new_collection_path, class: "btn txt-xx-small flex-item-justify-end flex-item-no-shrink", style: "view-transition-name: new-collection" do %>
-        <%= icon_tag "add" %>
-        <span class="for-screen-reader">New</span>
-      <% end %>
-    </div>
-
-    <div style="border-block-start: 1px solid var(--color-ink-lighter); padding-block-start: var(--block-space-half);">
-      <% @collections.each do |collection| %>
-        <h3 class="txt-small margin-block-end-half txt-tight-lines"><%= link_to collection.name, cards_path(collection_ids: [ collection ]) %></h3>
-      <% end %>
-    </div>
+    <%= event_next_page_link(@day_timeline.next_day) %>
   </div>
 </div>

@@ -1,0 +1,4 @@
+<div class="card-perma__notch card-perma__notch--bottom">
+  <%= button_to "Create card", card_publish_path(card), class: "btn" %>
+  <%= button_to "Save as draft", collection_card_path(card.collection, card), name: "card[status]", value: "drafted", method: :put, class: "btn btn--reversed" %>
+</div>

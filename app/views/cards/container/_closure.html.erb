@@ -1,0 +1,32 @@
+<div class="card-perma__notch card-perma__notch--bottom flex-column" id="<%= dom_id(card, :card_closure_toggle) %>" style="--card-color: <%= card.color %>">
+  <% if card.closed? %>
+    <div class="flex gap-half margin-block-start-double margin-block-end">
+      <span class="card-perma__closure-message">Completed by <%= card.closed_by.name %> on <%= local_datetime_tag(card.closed_at, style: :shortdate) %>.</span>
+      <%= button_to card_closure_path(card), method: :delete, class: "btn btn--plain borderless fill-transparent" do %>
+        <span class="pad-inline-end">Un-do</span>
+      <% end %>
+    </div>
+  <% else %>
+    <details class="expander" data-controller="details" data-details-target="details" data-action="keydown.esc->details#close click@document->details#closeOnClickOutside">
+      <summary class="expander__button btn borderless">
+        Close as
+        <%= icon_tag "caret-down" %>
+      </summary>
+      <div class="expander__content btn borderless">
+        <% Closure::Reason.labels.each do |label| %>
+          <%= button_to card_closure_path(card, reason: label), class: "expander__item btn" do %>
+            <span class="overflow-ellipsis"><%= label %></span>
+          <% end %>
+        <% end %>
+      </div>
+    </details>
+
+    <span class="card-perma__closure-message">
+      <% if card.doing? %>
+        Returns to <em>Considering</em> if no activity <%= local_datetime_tag(card.auto_reconsider_at, style: :indays) -%>.
+      <% elsif card.auto_closing? %>
+        Auto-closes if no activity <%= local_datetime_tag(card.auto_close_at, style: :indays) -%>.
+      <% end %>
+    </span>
+  <% end %>
+</div>

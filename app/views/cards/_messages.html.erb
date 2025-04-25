@@ -14,5 +14,10 @@
         <%= avatar_tag watcher %>
       <% end %>
     </div>
+
+    <div class="txt-align-center full-width flex flex-column margin-block-start-double">
+      <hr class="separator--horizontal full-width margin-block" style="--border-color: var(--color-subtle)">
+      <%= button_to_delete_card(@card) %>
+    </div>
   </div>
 <% end %>

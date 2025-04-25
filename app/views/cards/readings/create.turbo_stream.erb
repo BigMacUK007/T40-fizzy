@@ -1,1 +1,3 @@
-<%= turbo_stream.remove @notification %>
+<% @notifications.each do |notification| %>
+  <%= turbo_stream.remove notification %>
+<% end %>

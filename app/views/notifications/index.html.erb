@@ -13,7 +13,7 @@
   </nav>
 <% end %>
 
-<section class="panel center borderless unpad flex flex-column gap-half">
+<section class="notificiations-list panel center borderless unpad flex flex-column gap-half">
   <% if @unread.any? %>
     <div class="flex align-center justify-space-between margin-block-start margin-block-end-half">
       <h2 class="txt-medium txt-uppercase txt-alert">New for you</h2>
@@ -22,15 +22,13 @@
 
     <%= render partial: "notifications/notification", collection: @unread, cached: true %>
   <% else %>
-    <%# FIXME: Need to reveal this section if there are unread notification records in it %>
-    <div class="pad border-radius border translucent" style="--border-style: dashed; --border-color: var(--color-ink); --border-radius: 0.2em;">
+    <div class="notifications__empty-message pad border-radius border translucent" style="--border-style: dashed; --border-color: var(--color-ink); --border-radius: 0.2em;">
       <strong>Nothing new for you.</strong>
     </div>
   <% end %>
 </section>
 
-<%# FIXME: Need to hide this section if there are no notification records in it, but then it needs to appear when any are added %>
-<section class="notificiations-list--read panel center borderless unpad flex flex-column gap-half margin-block-start">
+<section class="notificiations-list--read panel center borderless unpad flex-column gap-half margin-block-start">
   <h2 class="txt-medium margin-block-start-double margin-block-end-half txt-uppercase translucent">Previously seen</h2>
 
   <div id="notifications_list_read">

@@ -1,26 +1,20 @@
 class Event < ApplicationRecord
-  include Particulars
+  include Notifiable, Particulars
 
+  belongs_to :collection
   belongs_to :creator, class_name: "User"
-  belongs_to :summary, touch: true, class_name: "EventSummary"
-  belongs_to :card
-
-  has_one :message, through: :summary
-  has_one :comment, through: :message, source: :messageable, source_type: "Comment"
+  belongs_to :eventable, polymorphic: true
+  belongs_to :summary, touch: true, class_name: "EventSummary", optional: true
 
   scope :chronologically, -> { order created_at: :asc, id: :desc }
 
-  after_create -> { card.touch_last_active_at }
+  after_create -> { eventable.event_was_created(self) }
 
-  def commented?
-    action == "commented"
+  def action
+    super.inquiry
   end
 
-  def generate_notifications
-    Notifier.for(self)&.generate
-  end
-
-  def generate_notifications_later
-    GenerateNotificationsJob.perform_later self
+  def notifiable_target
+    eventable
   end
 end

@@ -11,17 +11,17 @@
             <%= link_to comment.creator.name, comment.creator, class: "txt-ink btn btn--plain fill-transparent", data: { turbo_frame: "_top" } %>
           </strong>
 
-          <%= link_to card_path(comment.card, anchor: "comment_#{comment.id}"), class: "txt-undecorated txt-uppercase" do %>
+          <%= link_to comment, class: "txt-undecorated txt-uppercase" do %>
             <%= local_datetime_tag comment.created_at, style: :shortdate, class: "txt-ink translucent" %>
           <% end %>
 
           <%= link_to edit_card_comment_path(comment.card, comment),
-            class: "comment__edit btn btn--plain txt-xx-small fill-transparent translucent flex-item-justify-end" do %>
+                class: "comment__edit btn btn--plain txt-xx-small fill-transparent translucent flex-item-justify-end" do %>
             <%= icon_tag "menu-dots-horizontal" %> <span class="for-screen-reader">Edit this comment</span>
           <% end %>
         </div>
 
-        <div class="comment__body txt-align-start">
+        <div class="comment__body markdown-content txt-align-start">
           <%= sanitize comment.body_html %>
         </div>
 

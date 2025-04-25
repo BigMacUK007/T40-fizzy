@@ -1,0 +1,37 @@
+<section id="<%= dom_id(card, :card_container) %>"
+    class="card-perma" style="--card-color: <%= card.color %>;">
+  <%= render "cards/container/engagement", card: card %>
+
+  <aside class="card-perma__actions card-perma__actions--left" role="toolbar">
+    <%= render "cards/container/gild", card: card if card.doing? %>
+    <%= render "cards/container/image", card: card %>
+  </aside>
+
+  <div class="card-perma__bg">
+    <%= card_article_tag card, class: "card" do %>
+      <header class="card__header flex align-center gap-half min-width">
+        <%= link_to card.collection.name, cards_path(collection_ids: [ card.collection ]),
+              class: "card__collection txt-uppercase overflow-ellipsis txt-reversed" %>
+
+        <%= render "cards/display/perma/tags", card: card %>
+      </header>
+
+      <div class="card__body flex gap full-width flex-item-grow justify-space-between">
+        <%= render "cards/container/title", card: card %>
+        <%= render "cards/stagings/stages", card: card if card.doing? %>
+      </div>
+
+      <footer class="card__footer full-width flex align-start gap">
+        <%= render "cards/display/perma/meta", card: card %>
+      </footer>
+
+      <%= render "cards/display/common/background", card: card %>
+    <% end %>
+  </div>
+
+  <% if card.published? %>
+    <%= render "cards/container/footer/published", card: card %>
+  <% elsif card.creating? %>
+    <%= render "cards/container/footer/draft", card: card %>
+  <% end %>
+</section>
