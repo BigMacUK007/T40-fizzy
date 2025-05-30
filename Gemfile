@@ -30,6 +30,7 @@ gem "jbuilder"
 gem "actiontext-lexical", bc: "actiontext-lexical"
 gem "image_processing", "~> 1.14"
 gem "platform_agent"
+gem "aws-sdk-s3", require: false
 
 # Telemetry and logging
 gem "sentry-ruby"
