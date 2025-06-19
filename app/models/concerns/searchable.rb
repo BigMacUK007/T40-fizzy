@@ -68,3 +68,4 @@ module Searchable
       search_embedding&.destroy
     end
 end
+

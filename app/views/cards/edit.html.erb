@@ -12,6 +12,7 @@
           placeholder: "Add some notes, context, pictures, or video about this…",
           data: { action: "keydown.ctrl+enter->form#submit:prevent keydown.meta+enter->form#submit:prevent keydown.esc->form#cancel:stop" } do %>
       <%= mentions_prompt %>
+      <%= cards_prompt %>
     <% end %>
     </div>
     <%= form.button "Save changes", type: :submit, class: "btn btn--reversed", style: "--btn-background: #{@card.color}" %>

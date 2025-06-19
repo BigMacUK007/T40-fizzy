@@ -45,7 +45,7 @@ module Card::Searchable
   private
     # TODO: Temporary until we stabilize the search API
     def title_and_description
-      [ title, description.to_plain_text ].join(" ")
+      [ id.to_s, title, description.to_plain_text ].join(" ")
     end
 
     def search_embedding_content

@@ -1,0 +1,8 @@
+<lexical-prompt-item>
+  <template type="menu">
+    #<%= card.id %> <%= card.title %>
+  </template>
+  <template type="editor">
+    <%= link_to "##{card.id} #{card.title}", collection_card_url(card.collection, card) %>
+  </template>
+</lexical-prompt-item>

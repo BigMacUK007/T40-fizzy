@@ -105,6 +105,7 @@ Rails.application.routes.draw do
 
   namespace :prompts do
     resources :users
+    resources :cards
   end
 
   namespace :public do
