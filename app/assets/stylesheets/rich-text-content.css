@@ -20,7 +20,7 @@
     :where(h5) { font-size: 0.83em; }
     :where(h6) { font-size: 0.67em; }
 
-    :where(p, ul, ol, dl, blockquote, figure, .attachment) {
+    :where(p, ul, ol, dl, blockquote, figure:not(.attachment--custom), .attachment:not(.attachment--custom)) {
       margin-block: var(--block-margin);
       overflow-wrap: break-word;
       text-wrap: pretty;
@@ -54,7 +54,7 @@
     }
 
     /* Attachments */
-    .attachment {
+    .attachment:not(.attachment--custom) {
       block-size: auto;
       display: inline-block;
       inline-size: 100%;
@@ -221,7 +221,7 @@
     }
 
     /* Attachment junk gets wrapped in a paragraph causing unwanted space */
-    p:has(action-text-attachment) {
+    p:has(action-text-attachment[src]) {
       display: none;
 
       + * {
@@ -328,6 +328,22 @@
           color: var(--color-code-token__punctuation);
         }
       }
+    }
+  }
+
+  /* Debug styles by Jorge  */
+  /* Custom attachments such as mentions, etc. */
+  .attachment--custom {
+    display: inline;
+    padding: 0;
+    margin: 0;
+    white-space: normal;
+  }
+
+  .attachment--custom, .lexical-prompt-menu__item, action-text-attachment {
+    img {
+      display: inline;
+      width: 24px;
     }
   }
 }

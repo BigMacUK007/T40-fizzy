@@ -1,11 +1,4 @@
 GIT
-  remote: https://github.com/basecamp/actiontext-lexical
-  revision: 3f1ec3916f468ac2bb626091bcb97469c2c52483
-  specs:
-    actiontext-lexical (0.1.0)
-      rails (>= 8.0.2)
-
-GIT
   remote: https://github.com/basecamp/active_record-tenanted
   revision: f6fca189655ae6609d10ecad7cceed61592320c4
   specs:
@@ -153,6 +146,12 @@ GIT
       rake (>= 12.2)
       thor (~> 1.0, >= 1.2.2)
       zeitwerk (~> 2.6)
+
+PATH
+  remote: /Users/jorge/Work/jorgemanrubia/actiontext-lexical
+  specs:
+    actiontext-lexical (0.1.0)
+      rails (>= 8.0.2)
 
 GEM
   remote: https://rubygems.org/

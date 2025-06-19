@@ -10,7 +10,9 @@
 
     <%= form.rich_textarea :description, class: "card-field__description rich-text-content",
           placeholder: "Add some notes, context, pictures, or video about this…",
-          data: { action: "keydown.ctrl+enter->form#submit:prevent keydown.meta+enter->form#submit:prevent keydown.esc->form#cancel:stop" } %>
+          data: { action: "keydown.ctrl+enter->form#submit:prevent keydown.meta+enter->form#submit:prevent keydown.esc->form#cancel:stop" } do %>
+      <%= mentions_prompt %>
+    <% end %>
     </div>
     <%= form.button "Save changes", type: :submit, class: "btn btn--reversed", style: "--btn-background: #{@card.color}" %>
     <%= link_to "Close editor and discard changes", collection_card_path(@card.collection, @card), data: { form_target: "cancel" }, hidden: true %>

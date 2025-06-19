@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  include Accessor, Assignee, Mentionable, Named, Role, Transferable
+  include Accessor, ActionText::Attachable, Assignee, Mentionable, Named, Role, Transferable
   include Timelined # Depends on Accessor
 
   has_one_attached :avatar
@@ -23,6 +23,10 @@ class User < ApplicationRecord
     sessions.delete_all
     accesses.destroy_all
     update! active: false, email_address: deactived_email_address
+  end
+
+  def to_attachable_partial_path
+    "users/attachable"
   end
 
   private

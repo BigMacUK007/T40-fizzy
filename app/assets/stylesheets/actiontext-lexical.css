@@ -1,5 +1,9 @@
 lexical-editor {
-  .node--selected {
+  display: block;
+  position: relative;
+  overflow: visible;
+
+  .node--selected:not(.attachment--custom) {
     &:not(:has(img)) {
       box-shadow: 0 0 0 var(--hover-size) var(--hover-color);
     }
@@ -133,4 +137,30 @@ lexical-toolbar {
       background-color: var(--color-selected);
     }
   }
+}
+
+/* Debug styles by Jorge */
+.lexical-prompt-menu {
+  background: white;
+  border: 2px solid black;
+  list-style: none;
+
+  margin: 0;
+  padding: 0;
+  min-height: 100px;
+  min-width: 300px;
+
+  visibility: hidden;
+
+  &.lexical-prompt-menu--visible {
+    visibility: initial;
+  }
+
+  [aria-selected] {
+    border: 1px solid red;
+  }
+}
+
+.attachment--custom.node--selected {
+  box-shadow: 0 0 0 var(--hover-size) var(--hover-color);
 }
