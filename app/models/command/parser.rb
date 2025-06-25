@@ -39,6 +39,8 @@ class Command::Parser
         Command::GetInsight.new(query: combined_arguments, card_ids: cards.ids)
       when "/search"
         Command::Search.new(terms: combined_arguments)
+      when "/stage"
+        Command::Stage.new(stage_id: stage_from(combined_arguments)&.id, card_ids: cards.ids)
       when "/visit"
         Command::VisitUrl.new(url: command_arguments.first)
       when "/tag"
@@ -60,6 +62,16 @@ class Command::Parser
     def assignee_from(string)
       string_without_at = string.delete_prefix("@")
       User.all.find { |user| user.mentionable_handles.include?(string_without_at) }
+    end
+
+    def stage_from(combined_arguments)
+      candidate_stages.find do |stage|
+        stage.name.downcase.include?(combined_arguments.downcase)
+      end
+    end
+
+    def candidate_stages
+      Workflow::Stage.where(workflow_id: cards.joins(:collection).select("collections.workflow_id").distinct)
     end
 
     def tag_title_from(string)

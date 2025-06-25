@@ -70,7 +70,7 @@ class Command::Ai::Translator
         Cards have comments and live inside collections.
 
         Context filters describe card state already true.
-        Commands (/assign, /tag, /close, /search, /clear, /do, /reconsider, /consider) apply new actions.
+        Commands (/assign, /tag, /close, /search, /clear, /do, /reconsider, /consider, /stage) apply new actions.
 
         Context properties you may use
           * terms — array of keywords
@@ -111,6 +111,8 @@ class Command::Ai::Translator
             → context.tag_ids = ["design"]; command /assign jz
           * "close as [reason]" or "close because [reason]" → /close [reason]
           * Lone "close"                → /close (acts on current context)
+          * /stage [workflow stage]     → assign the card to the given stage. The card is in a stage when it gets assigned a stage.
+          * When asking to *move* a card, unless it refers to "do, doing, reconsider, considering", use /stage.
 
         Crucial don’ts
           * Never use names or tags mentioned inside commands as filters.
