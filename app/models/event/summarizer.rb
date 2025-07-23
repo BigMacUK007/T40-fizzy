@@ -23,6 +23,7 @@ class Event::Summarizer
     ## Writing style
     - Instead of using passive voice, prefer referring to users (authors and creators) as the subjects doing things.
     - Aggregate related items into thematic clusters; avoid repeating card titles verbatim.
+      * Consider the collection name as a logical grouping unit.
     - Prefer compact paragraphs over bullet lists.
     - Refer to people by first name (or full name if duplicates exist).
       - e.g. “Ann closed …”, not “Card 123 was closed by Ann.”
@@ -142,6 +143,7 @@ class Event::Summarizer
         * Closed by: #{card.closed_by&.name}
         * Closed at: #{card.closed_at}
         * Collection id: #{card.collection_id}
+        * Collection name: #{card.collection.name}
         * Number of comments: #{card.comments.count}
         * Path: #{collection_card_path(card.collection, card)}
 
