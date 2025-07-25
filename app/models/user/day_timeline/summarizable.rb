@@ -10,7 +10,7 @@ module User::DayTimeline::Summarizable
   end
 
   def summarizable?
-    !day.today? || events.count >= 10
+    day.past? || summarizable_today?
   end
 
   def summarize
@@ -28,4 +28,9 @@ module User::DayTimeline::Summarizable
   def summarize_later
     User::DayTimeline::SummarizeJob.perform_later(self)
   end
+
+  private
+    def summarizable_today?
+      day.today? && events.count >= 10
+    end
 end
