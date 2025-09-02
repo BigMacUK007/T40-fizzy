@@ -3,7 +3,7 @@ class User::Filtering
 
   attr_reader :user, :filter, :expanded
 
-  delegate :as_params, to: :filter
+  delegate :as_params, :any?, to: :filter
 
   def initialize(user, filter, expanded: false)
     @user, @filter, @expanded = user, filter, expanded
@@ -42,9 +42,7 @@ class User::Filtering
   end
 
   def any?
-    filter.tags.any? || filter.assignees.any? || filter.creators.any? || filter.closers.any? ||
-      filter.stages.any? || filter.terms.any? || filter.card_ids&.any? ||
-      filter.assignment_status.unassigned? || !filter.indexed_by.all? || !filter.sorted_by.latest?
+    filter.used?(ignore_collections: true)
   end
 
   def show_indexed_by?

@@ -168,4 +168,12 @@ class FilterTest < ActiveSupport::TestCase
     filter = users(:david).filters.new closer_ids: [ users(:jz).id ]
     assert_includes filter.cards, cards(:shipping)
   end
+
+  test "check if a filter is used" do
+    assert users(:david).filters.new(creator_ids: [ users(:david).id ]).used?
+    assert_not users(:david).filters.new.used?
+
+    assert users(:david).filters.new(collection_ids: [ collections(:writebook).id ]).used?
+    assert_not users(:david).filters.new(collection_ids: [ collections(:writebook).id ]).used?(ignore_collections: true)
+  end
 end

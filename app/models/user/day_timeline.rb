@@ -30,7 +30,7 @@ class User::DayTimeline
   end
 
   def has_weekly_highlights?
-    first_day_with_activity_this_week? && weekly_highlights.present?
+    !filter.used? && first_day_with_activity_this_week? && weekly_highlights.present?
   end
 
   def weekly_highlights

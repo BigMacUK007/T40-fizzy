@@ -36,6 +36,12 @@ module Filter::Params
     before_save { self.params_digest = self.class.digest_params(as_params) }
   end
 
+  def used?(ignore_collections: false)
+    tags.any? || assignees.any? || creators.any? || closers.any? ||
+      stages.any? || terms.any? || card_ids&.any? || (!ignore_collections && collections.present?) ||
+      assignment_status.unassigned? || !indexed_by.all? || !sorted_by.latest?
+  end
+
   # +as_params+ uses `resource#ids` instead of `#resource_ids`
   # because the latter won't work on unpersisted filters.
   def as_params
