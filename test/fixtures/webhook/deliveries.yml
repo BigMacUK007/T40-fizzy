@@ -4,32 +4,24 @@ successfully_completed:
   webhook: active
   event: logo_published
   state: completed
-  request:
-    headers: {}
-  response:
-    code: 200
-    headers: {}
+  request: '<%= { headers: {} }.to_json %>'
+  response: '<%= { code: 200, headers: {} }.to_json %>'
   created_at: <%= 1.week.ago %>
 
 unsuccessfully_completed:
   webhook: active
   event: logo_assignment_jz
   state: completed
-  request:
-    headers: {}
-  response:
-    code: 422
-    headers: {}
+  request: '<%= { headers: {} }.to_json %>'
+  response: '<%= { code: 422, headers: {} }.to_json %>'
   created_at: <%= 1.week.ago + 1.hour %>
 
 errored:
   webhook: active
   event: layout_published
   state: errored
-  request:
-    headers: {}
-  response:
-    error: "destination_unreachable"
+  request: '<%= { headers: {} }.to_json %>'
+  response: '<%= { error: "destination_unreachable" }.to_json %>'
   created_at: <%= 1.week.ago %>
 
 pending:

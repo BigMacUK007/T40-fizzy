@@ -67,7 +67,4 @@ Rails.application.configure do
 
   # Load test helpers
   config.autoload_paths += %w[ test/test_helpers ]
-
-  # Auto-encrypt test fixture attributes
-  config.active_record.encryption.encrypt_fixtures = true
 end

@@ -51,7 +51,7 @@ class Webhook::DeliveryTest < ActiveSupport::TestCase
     delivery = webhook_deliveries(:pending)
 
     stub_request(:post, delivery.webhook.url)
-      .to_return(status: 200, headers: { "content-type" => "application/json", "x-test" => "foo" })
+      .to_return(status: 200, headers: { "content-type" => "application/json" })
 
     assert_equal "pending", delivery.state
 
@@ -63,7 +63,6 @@ class Webhook::DeliveryTest < ActiveSupport::TestCase
     assert delivery.persisted?
     assert_equal "completed", delivery.state
     assert delivery.request[:headers].present?
-    assert_equal [ "foo" ], delivery.response[:headers]["x-test"]
     assert_equal 200, delivery.response[:code]
     assert delivery.response[:error].blank?
   end

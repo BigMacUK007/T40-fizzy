@@ -21,7 +21,6 @@ class Webhook < ApplicationRecord
     comment_created
   ].freeze
 
-  encrypts :signing_secret
   has_secure_token :signing_secret
 
   has_many :deliveries, dependent: :delete_all

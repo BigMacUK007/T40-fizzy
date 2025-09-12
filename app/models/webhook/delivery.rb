@@ -12,8 +12,6 @@ class Webhook::Delivery < ApplicationRecord
   belongs_to :webhook
   belongs_to :event
 
-  encrypts :request, :response
-
   store :request, coder: JSON
   store :response, coder: JSON
 
@@ -54,7 +52,7 @@ class Webhook::Delivery < ApplicationRecord
           Net::HTTP::Post.new(uri, headers).tap { |request| request.body = payload }
         )
 
-      { code: response.code.to_i, headers: response.to_hash }
+      { code: response.code.to_i }
       end
     rescue Resolv::ResolvTimeout, Resolv::ResolvError, SocketError
       { error: :dns_lookup_failed }
