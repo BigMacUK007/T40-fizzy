@@ -8,6 +8,8 @@ module Authentication
     before_action :require_authentication
     helper_method :authenticated?
 
+    etag { Current.session.id if authenticated? }
+
     include LoginHelper
   end
 
