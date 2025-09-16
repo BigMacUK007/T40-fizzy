@@ -8,18 +8,14 @@ export default class extends Controller {
     this.#restoreToggles()
   }
 
-  // When toggling, save the state to localStorage as long as it's not
-  // temporarily expanded during a filter
   toggle(event) {
     const section = event.target
-
-    if (!section.hasAttribute("data-temp-expand")) {
-      if (section.open) {
-        localStorage.removeItem(this.#localStorageKey(section))
-      } else {
-        localStorage.setItem(this.#localStorageKey(section), true)
-      }
-    }
+    if (section.hasAttribute("data-temp-expand")) return
+    
+    const key = this.#localStorageKey(section)
+    section.open
+      ? localStorage.removeItem(key)
+      : localStorage.setItem(key, true)
   }
 
   showWhileFiltering() {
@@ -34,11 +30,11 @@ export default class extends Controller {
   }
 
   #restoreToggles() {
-    for (const section of this.sectionTargets) {
-      const isCollapsed = localStorage.getItem(this.#localStorageKey(section)) != null
-      if (isCollapsed) section.open = false
+    this.sectionTargets.forEach(section => {
+      const key = this.#localStorageKey(section)
+      section.open = !localStorage.getItem(key)
       section.removeAttribute("data-temp-expand")
-    }
+    })
   }
 
   #localStorageKey(section) {
