@@ -46,7 +46,7 @@ class User::DayTimeline
   end
 
   def cache_key
-    ActiveSupport::Cache.expand_cache_key [ user, filter, day.to_date, events, Workflow.all ], "day-timeline"
+    ActiveSupport::Cache.expand_cache_key [ user, filter, day.to_date, events, Workflow.all, weekly_highlights ], "day-timeline"
   end
 
   private
