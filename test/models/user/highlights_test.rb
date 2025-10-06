@@ -5,7 +5,7 @@ class User::HighlightsTest < ActiveSupport::TestCase
 
   setup do
     @user = users(:david)
-    travel_to [ 1.week.ago, 1.week.ago + 1.day ].find { |d| !d.sunday? }
+    travel_to [ Time.current, 1.day.ago ].find { |d| !d.sunday? }
     Current.session = sessions(:david)
   end
 
