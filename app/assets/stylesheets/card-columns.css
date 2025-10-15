@@ -72,6 +72,11 @@
     scroll-snap-align: start;
     transition: var(--column-transition);
 
+    /* Disable transitions during restoration */
+    &.no-transitions {
+      transition: none;
+    }
+
     /* Make sure filter dialogs don't end up behind sticky headers */
     &:has([open]) {
       z-index: 3;

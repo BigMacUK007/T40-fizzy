@@ -1,11 +1,13 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static classes = [ "collapsed" ]
+  static classes = [ "collapsed", "noTransitions" ]
   static targets = [ "column", "button" ]
 
   connect() {
+    this.#disableTransitions()
     this.#restoreColumns()
+    requestAnimationFrame(() => this.#enableTransitions())
   }
 
   toggle({ target }) {
@@ -17,6 +19,22 @@ export default class extends Controller {
     if (event.target.hasAttribute("data-collapsible-columns-target") && event.detail.attributeName === "class") {
       event.preventDefault()
     }
+  }
+
+  #disableTransitions() {
+    this.columnTargets.forEach(column => {
+      if (this.noTransitionsClass) {
+        column.classList.add(this.noTransitionsClass)
+      }
+    })
+  }
+
+  #enableTransitions() {
+    this.columnTargets.forEach(column => {
+      if (this.noTransitionsClass) {
+        column.classList.remove(this.noTransitionsClass)
+      }
+    })
   }
 
   #toggleColumn(column) {
