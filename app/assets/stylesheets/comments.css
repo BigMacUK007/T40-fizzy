@@ -37,8 +37,6 @@
   }
 
   .comment__author {
-    margin-inline-end: calc(var(--comment-padding-inline) * -0.66);
-
     .btn {
       font-weight: inherit;
     }
@@ -54,6 +52,7 @@
   }
 
   .comment__body {
+    padding-inline-end: var(--reaction-size);
     text-align: start;
 
     :first-child {
@@ -75,7 +74,7 @@
     border-radius: 0.2em;
     padding:
       var(--comment-padding-block)
-      var(--comment-padding-inline)
+      calc(var(--comment-padding-inline) / 2)
       calc(var(--comment-padding-block) * 1.5)
       var(--comment-padding-inline);
     word-wrap: break-word;
