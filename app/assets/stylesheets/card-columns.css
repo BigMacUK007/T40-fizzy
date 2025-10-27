@@ -511,63 +511,6 @@
     }
   }
 
-  /* Pinstripes
-  /* -------------------------------------------------------------------------- */
-
-  .pinstripes {
-    --pinstripe-color: oklch(var(--lch-blue-light));
-    --pinstripe-spacing: 5px;
-
-    background: repeating-linear-gradient(
-      90deg,
-      var(--pinstripe-color),
-      var(--pinstripe-color) 1px,
-      transparent 1px,
-      transparent var(--pinstripe-spacing)
-    );
-    inset: -24px 0;
-    overflow: hidden;
-    position: absolute;
-
-    &:not(.pinstripes--alt) {
-      background-color: oklch(var(--lch-blue-lightest));
-    }
-  }
-
-  .pinstripes--alt {
-    --pinstripe-spacing: 10px; /* 2x previous spacing value */
-  }
-
-  .pinstripes__fade {
-    background: linear-gradient(to right, var(--color-canvas) 10%, transparent 20%, transparent 80%, var(--color-canvas) 90%);
-    content: "";
-    inset: 0;
-    position: absolute;
-
-    /* Fade top/bottom */
-    &:before,
-    &:after {
-      background: radial-gradient(
-        circle at center bottom,
-        transparent,
-        transparent 65%,
-        var(--color-canvas) 70%,
-        var(--color-canvas)
-      );
-      block-size: 480px;
-      inline-size: 200%;
-      content: "";
-      inset: 0;
-      position: absolute;
-      translate: -25% 0;
-    }
-
-    &:after {
-      inset-block: auto 0;
-      rotate: 180deg;
-    }
-  }
-
   /* Collection tools
   /* -------------------------------------------------------------------------- */
 
@@ -708,27 +651,6 @@
       &:hover {
         --btn-background: var(--card-color);
       }
-    }
-  }
-
-  @supports(mask: repeating-linear-gradient(black)) {
-    .card__column-name--stream:before {
-      --pinstripe-color: var(--color-canvas);
-      --pinstripe-spacing: 5px;
-
-      background: var(--color-canvas);
-      background: repeating-linear-gradient(
-        90deg,
-        var(--pinstripe-color),
-        var(--pinstripe-color) 1px,
-        transparent 1px,
-        transparent var(--pinstripe-spacing)
-      );
-      content: "";
-      inset: 0;
-      opacity: 0.35;
-      position: absolute;
-      z-index: 0;
     }
   }
 }
