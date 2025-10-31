@@ -1,0 +1,9 @@
+<div class="settings__panel settings__panel--entropy panel shadow center">
+  <h2 class="divider txt-large">Name</h2>
+  <%= form_with model: account, url: account_settings_path, method: :put, scope: :account, data: { controller: "form" }, class: "flex" do |form| %>
+    <%= form.text_field :name, required: true, class: "input input--transparent full-width", data: { action: "input->form#disableSubmitWhenInvalid" } %>
+    <%= form.button data: { form_target: "submit" }, disabled: form.object do %>
+      Save
+    <% end %>
+  <% end %>
+</div>

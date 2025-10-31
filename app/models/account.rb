@@ -5,6 +5,8 @@ class Account < ApplicationRecord
 
   after_create :create_join_code
 
+  validates :name, presence: true
+
   class << self
     def create_with_admin_user(account:, owner:)
       create!(**account).tap do
