@@ -7,8 +7,11 @@ Rails.application.routes.draw do
   end
 
   resources :users do
-    resource :role, module: :users
-    resources :push_subscriptions, module: :users
+    scope module: :users do
+      resource :role
+      resource :events
+      resources :push_subscriptions
+    end
   end
 
   resources :collections do

@@ -1,8 +1,5 @@
 <% @page_title = @user.name %>
-
-<% content_for :header do %>
-  <%= render "my/menus/menu" %>
-<% end %>
+<% me_or_you = Current.user == @user ? "me" : @user.first_name %>
 
 <div class="profile-layout">
   <section class="panel shadow txt-align-center" style="--panel-size: 45ch;">
@@ -30,8 +27,10 @@
       </div>
 
       <div class="flex-inline center justify-center flex-wrap gap">
-        <%= link_to "Which cards are assigned to #{ Current.user == @user ? "me" : @user.first_name }?", cards_path(assignee_ids: [@user.id], sorted_by: "newest"), class: "btn", data: { turbo_frame: "_top" } %>
-        <%= link_to "Which cards were added by #{ Current.user == @user ? "me" : @user.first_name }?", cards_path(creator_ids: [@user.id], sorted_by: "newest"), class: "btn", data: { turbo_frame: "_top" } %>
+        <%= link_to "Which cards are assigned to #{me_or_you}?", 
+              cards_path(assignee_ids: [ @user.id ], sorted_by: "newest"), class: "btn", data: { turbo_frame: "_top" } %>
+        <%= link_to "Which cards were added by #{me_or_you}?", 
+              cards_path(creator_ids: [ @user.id ], sorted_by: "newest"), class: "btn", data: { turbo_frame: "_top" } %>
       </div>
     </div>
   </section>
@@ -49,10 +48,4 @@
   <% end %>
 </div>
 
-
-
-
-
-<h1 class="font-weight-black txt-large margin-block-double"><%= "What #{ Current.user == @user ? "have you" : "has #{ @user.first_name }" } been up to?" %></h1>
-
-<%= render "users/activity_timeline", user: @user, day_timeline: @day_timeline, filter: @filter %>
+<%= turbo_frame_tag "user_events", src: user_events_path(@user) %>
