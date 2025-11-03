@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resources :users do
     scope module: :users do
+      resource :avatar
       resource :role
       resource :events
       resources :push_subscriptions
@@ -136,12 +137,6 @@ Rails.application.routes.draw do
       resources :transfers
       resource :magic_link
       resource :menu
-    end
-  end
-
-  resources :users do
-    scope module: :users do
-      resource :avatar
     end
   end
 
