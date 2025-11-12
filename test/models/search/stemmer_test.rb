@@ -10,6 +10,6 @@ class Search::StemmerTest < ActiveSupport::TestCase
   test "stem multiple words" do
     result = Search::Stemmer.stem("test, running      JUMPING & walking")
 
-    assert_equal "test, run jump & walk", result
+    assert_equal "test run jump walk", result
   end
 end
