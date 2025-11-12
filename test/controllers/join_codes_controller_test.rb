@@ -3,7 +3,7 @@ require "test_helper"
 class JoinCodesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @tenant = accounts("37s").external_account_id
-    @join_code = account_join_codes(:sole)
+    @join_code = account_join_codes(:"37s")
   end
 
   test "new" do
@@ -41,10 +41,9 @@ class JoinCodesControllerTest < ActionDispatch::IntegrationTest
         end
       end
 
-      assert_equal @join_code.code, Membership.last.join_code
-
       assert_redirected_to session_magic_link_path
-      assert_equal landing_url(script_name: "/#{@tenant}"), session[:return_to_after_authenticating]
+      account = accounts("37s")
+      assert_equal new_users_join_url(script_name: account.slug), session[:return_to_after_authenticating]
     end
   end
 
@@ -58,7 +57,8 @@ class JoinCodesControllerTest < ActionDispatch::IntegrationTest
         end
       end
 
-      assert_redirected_to session_magic_link_path
+      account = accounts("37s")
+      assert_redirected_to landing_url(script_name: account.slug)
     end
   end
 end

@@ -2,31 +2,21 @@ require "test_helper"
 
 class Users::JoinsControllerTest < ActionDispatch::IntegrationTest
   test "new" do
-    identity = Identity.create!(email_address: "new.user@example.com")
-    identity.memberships.create(tenant: Current.account.external_account_id, join_code: Account::JoinCode.sole.code)
-    sign_in_as identity
+    sign_in_as :david
 
     get new_users_join_path
     assert_response :ok
   end
 
-  test "new with invalid params" do
-    identity = Identity.create!(email_address: "new.user@example.com")
-    membership = identity.memberships.create(tenant: Current.account.external_account_id, join_code: "PHONY")
-    sign_in_as identity
-
-    get new_users_join_path
-    assert_redirected_to unlink_membership_url(script_name: nil, membership_id: membership.signed_id(purpose: :unlinking))
-  end
-
   test "create" do
-    identity = Identity.create!(email_address: "newart.userbaum@example.com")
-    identity.memberships.create(tenant: Current.account.external_account_id, join_code: Account::JoinCode.sole.code)
-    sign_in_as identity
+    user = users(:david)
+    sign_in_as user
 
-    assert_difference -> { User.count }, +1 do
-      post users_joins_path, params: { user: { name: "Newart Userbaum" } }
+    assert_no_difference -> { User.count } do
+      post users_joins_path, params: { user: { name: "David Updated" } }
       assert_redirected_to landing_path
     end
+
+    assert_equal "David Updated", user.reload.name
   end
 end

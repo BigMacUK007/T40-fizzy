@@ -9,7 +9,7 @@ class Account::JoinCodesControllerTest < ActionDispatch::IntegrationTest
     get account_join_code_path
     assert_response :success
 
-    assert_changes -> { Account::JoinCode.sole.code } do
+    assert_changes -> { Current.account.join_code.reload.code } do
       delete account_join_code_path
       assert_redirected_to account_join_code_path
     end
@@ -20,7 +20,7 @@ class Account::JoinCodesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     put account_join_code_path, params: { account_join_code: { usage_limit: 5 } }
-    assert_equal 5, Account::JoinCode.sole.usage_limit
+    assert_equal 5, Current.account.join_code.reload.usage_limit
     assert_redirected_to account_join_code_path
   end
 

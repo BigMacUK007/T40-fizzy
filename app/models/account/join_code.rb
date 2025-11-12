@@ -10,7 +10,7 @@ class Account::JoinCode < ApplicationRecord
   def redeem
     transaction do
       increment!(:usage_count)
-      yield if block_given?
+      yield account if block_given?
     end
   end
 

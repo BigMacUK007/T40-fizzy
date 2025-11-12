@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.2].define(version: 2025_11_12_093037) do
+ActiveRecord::Schema[8.2].define(version: 2025_11_12_184932) do
   create_table "accesses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "accessed_at"
     t.bigint "board_id", null: false
@@ -291,7 +291,6 @@ ActiveRecord::Schema[8.2].define(version: 2025_11_12_093037) do
   create_table "memberships", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "identity_id", null: false
-    t.string "join_code"
     t.string "tenant", null: false
     t.datetime "updated_at", null: false
     t.index ["identity_id"], name: "index_memberships_on_identity_id"

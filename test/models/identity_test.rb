@@ -18,4 +18,20 @@ class IdentityTest < ActiveSupport::TestCase
     assert Identity.new(email_address: "test@basecamp.com").staff?
     assert_not Identity.new(email_address: "test@example.com").staff?
   end
+
+  test "join creates membership and user for account" do
+    identity = identities(:david)
+    account = accounts(:initech)
+
+    assert_difference ["Membership.count", "User.count"], 1 do
+      identity.join(account)
+    end
+
+    membership = identity.memberships.last
+    assert_equal account.external_account_id.to_s, membership.tenant
+
+    user = account.users.last
+    assert_equal membership, user.membership
+    assert_equal identity.email_address, user.name
+  end
 end

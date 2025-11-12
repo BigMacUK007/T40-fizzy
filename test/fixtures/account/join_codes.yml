@@ -1,5 +1,11 @@
-sole:
-  code: 1234-5678-9XYZ
+37s:
+  code: 37S0-5678-9XYZ
   usage_count: 0
   usage_limit: 10
   account: 37s
+
+initech:
+  code: INIT-5678-9XYZ
+  usage_count: 10
+  usage_limit: 10
+  account: initech

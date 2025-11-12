@@ -11,7 +11,7 @@ class Account::JoinCodeTest < ActiveSupport::TestCase
   end
 
   test "redeem" do
-    join_code = account_join_codes(:sole)
+    join_code = account_join_codes(:"37s")
 
     assert_difference -> { join_code.reload.usage_count }, 1 do
       join_code.redeem
@@ -19,7 +19,7 @@ class Account::JoinCodeTest < ActiveSupport::TestCase
   end
 
   test "reset" do
-    join_code = account_join_codes(:sole)
+    join_code = account_join_codes(:"37s")
     original_code = join_code.code
 
     join_code.reset

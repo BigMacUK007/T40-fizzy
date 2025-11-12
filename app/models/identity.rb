@@ -1,5 +1,5 @@
 class Identity < ApplicationRecord
-  include Transferable
+  include Joinable, Transferable
 
   has_many :memberships, dependent: :destroy
   has_many :magic_links, dependent: :destroy
