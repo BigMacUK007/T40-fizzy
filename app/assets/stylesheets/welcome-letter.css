@@ -1,6 +1,12 @@
 @layer components {
   .welcome-letter {
+    position: relative;
     z-index: 99;
+  }
+
+  .welcome-letter__close {
+    inset: var(--block-space) var(--block-space) auto auto;
+    position: absolute;
   }
 
   .welcome-letter__signature {

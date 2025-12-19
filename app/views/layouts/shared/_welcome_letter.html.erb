@@ -1,5 +1,10 @@
-<div data-controller="dialog" data-action="turbo:load@window->dialog#open" data-dialog-modal-value="true">
+<div data-controller="dialog" data-action="turbo:load@window->dialog#open" data-dialog-modal-value="true" data-action="keydown.esc->dialog#close">
   <dialog class="welcome-letter panel panel--wide shadow dialog" data-dialog-target="dialog">
+    <button class="welcome-letter__close btn txt-x-small" data-action="dialog#close">
+      <%= icon_tag "close" %>
+      <span class="for-screen-reader">Close dialog</span>
+    </button>
+
     <div class="txt-align-center margin-block-end">
       <span class="welcome-letter__avatar txt-xx-large avatar center"><%= image_tag "jf-avatar.jpg", size: 36%></span>
     </div>
