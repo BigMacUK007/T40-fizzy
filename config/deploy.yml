@@ -13,6 +13,8 @@ servers:
 # How you connect to your server
 ssh:
   user: benmacdonald
+  keys:
+    - ~/.ssh/google_compute_engine
 
 # Automatic SSL
 proxy:
