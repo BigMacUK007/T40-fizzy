@@ -138,13 +138,13 @@ class FizzyImporter
     # Skip number auto-assignment
     card.number = card_number
 
-    # Set description via ActionText
-    if data["description"].present?
-      card.description = ActionText::Content.new(data["description"])
-    end
-
-    # Save without callbacks that would trigger events
+    # Save card first (without description) so account association exists
     card.save!(validate: false)
+
+    # Now set description - ActionText will get account_id from card.account
+    if data["description"].present?
+      card.update!(description: data["description"])
+    end
 
     # Handle special statuses
     case data["status"]
@@ -159,17 +159,17 @@ class FizzyImporter
 
   def import_comments(card, comments)
     comments.each do |comment_data|
-      comment = card.comments.new(
+      comment = card.comments.create!(
         account: @account,
         creator: @user,
         created_at: Time.parse(comment_data["created_at"])
       )
 
+      # Update body after save so ActionText gets account_id from comment.account
       if comment_data["body"].present?
-        comment.body = ActionText::Content.new(comment_data["body"])
+        comment.update!(body: comment_data["body"])
       end
 
-      comment.save!
       @stats[:comments] += 1
     end
   end
