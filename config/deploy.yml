@@ -31,8 +31,8 @@ env:
     - SMTP_PASSWORD
   clear:
     BASE_URL: https://fizzy.t40.dev
-    MAILER_FROM_ADDRESS: fizzy@t40.dev
-    SMTP_ADDRESS: smtp.mailgun.org
+    MAILER_FROM_ADDRESS: noreply@mail.fizzy.t40.dev
+    SMTP_ADDRESS: smtp.eu.mailgun.org
     MULTI_TENANT: false
     SOLID_QUEUE_IN_PUMA: true
 
