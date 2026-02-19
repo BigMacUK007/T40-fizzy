@@ -5,18 +5,18 @@
       <%= button_to "Mark all as read", bulk_reading_path, class: "btn txt-small", form: { data: { turbo: false } }, data: { action: "badge#clear" } %>
     </div>
   <% else %>
-    <div class="notifications-list__empty-message blank-slate blank-slate--empty align-self-center">
+    <div class="notifications-list__blank-slate blank-slate align-self-center">
       Nothing new for you
     </div>
   <% end %>
 
   <div id="notifications_list" contents>
-    <%= render partial: "notifications/index/notification", collection: unread, cached: true %>
+    <%= render partial: "notifications/notification", collection: unread, cached: true %>
   </div>
 
   <% if unread.any? %>
     <% total_unread_count = Current.user.notifications.unread.count %>
-    <% if Current.user.notifications.unread.count > NotificationsController::MAX_UNREAD_NOTIFICATIONS %>
+    <% if total_unread_count > NotificationsController::MAX_UNREAD_NOTIFICATIONS %>
       <div class="fill-highlight txt-x-small border-radius pad-block-half pad-inline">
         Showing the <%= NotificationsController::MAX_UNREAD_NOTIFICATIONS %> most recent (<%= total_unread_count - NotificationsController::MAX_UNREAD_NOTIFICATIONS %> are hidden)
       </div>

@@ -5,16 +5,20 @@ class SearchesControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @board.update!(all_access: true)
-    @card = @board.cards.create!(title: "Layout is broken", description: "Look at this mess.", creator: @user)
-    @comment_card = @board.cards.create!(title: "Some card", creator: @user)
+    @card = @board.cards.create!(title: "Layout is broken", description: "Look at this mess.", status: "published", creator: @user)
+    @comment_card = @board.cards.create!(title: "Some card", status: "published", creator: @user)
     @comment_card.comments.create!(body: "overflowing text issue", creator: @user)
-    @comment2_card = @board.cards.create!(title: "Just haggis", description: "More haggis", creator: @user)
+    @comment2_card = @board.cards.create!(title: "Just haggis", description: "More haggis", status: "published", creator: @user)
     @comment2_card.comments.create!(body: "I love haggis", creator: @user)
 
     untenanted { sign_in_as @user }
   end
 
   test "search" do
+    # Search query is blank
+    get search_path(q: "", script_name: "/#{@account.external_account_id}")
+    assert @query.nil?
+
     # Searching by card title
     get search_path(q: "broken", script_name: "/#{@account.external_account_id}")
     assert_select "li .search__title", text: /Layout is broken/
@@ -39,11 +43,11 @@ class SearchesControllerTest < ActionDispatch::IntegrationTest
     # Searching with non-existent card id
     get search_path(q: "999999", script_name: "/#{@account.external_account_id}")
     assert_select "form[data-controller='auto-submit']", count: 0
-    assert_select ".search__empty", text: "No matches"
+    assert_select ".search__blank-slate", text: "No matches"
   end
 
   test "search highlights matched terms with proper HTML marks" do
-    @board.cards.create!(title: "Testing search highlighting", creator: @user)
+    @board.cards.create!(title: "Testing search highlighting", status: "published", creator: @user)
 
     get search_path(q: "highlighting", script_name: "/#{@account.external_account_id}")
     assert_response :success
@@ -52,6 +56,7 @@ class SearchesControllerTest < ActionDispatch::IntegrationTest
   test "search preserves highlight marks but escapes surrounding HTML" do
     @board.cards.create!(
       title: "<b>Bold</b> testing content",
+      status: "published",
       creator: @user
     )
 
