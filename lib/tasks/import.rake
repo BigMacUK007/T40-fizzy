@@ -2,7 +2,7 @@
 
 namespace :fizzy do
   desc "Import data from fizzy.do export ZIP file"
-  task :import, [:zip_path, :user_email] => :environment do |_t, args|
+  task :import, [ :zip_path, :user_email ] => :environment do |_t, args|
     zip_path = args[:zip_path]
     user_email = args[:user_email]
 
@@ -100,7 +100,7 @@ class FizzyImporter
   end
 
   def find_or_create_column(board, status)
-    return nil if status.in?(["Done", "Not now", "Maybe?"])
+    return nil if status.in?([ "Done", "Not now", "Maybe?" ])
 
     key = "#{board.id}:#{status}"
     @columns[key] ||= begin
@@ -184,7 +184,7 @@ class FizzyImporter
       actual_filename = filename.sub(/^[a-zA-Z0-9]+_/, "")
 
       begin
-        tempfile = Tempfile.new([actual_filename, File.extname(actual_filename)])
+        tempfile = Tempfile.new([ actual_filename, File.extname(actual_filename) ])
         tempfile.binmode
         tempfile.write(entry.get_input_stream.read)
         tempfile.rewind
